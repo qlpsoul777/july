@@ -1,4 +1,4 @@
-package com.qlp.cms.orm;
+package com.qlp.core.orm;
 
 import java.io.Serializable;
 

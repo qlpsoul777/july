@@ -44,10 +44,10 @@
     </bean>
     
     <!-- Spring Data Jpa配置 -->
-    <jpa:repositories base-package="com.qlp.cms"
+    <jpa:repositories base-package="com.qlp.core"
                       transaction-manager-ref="transactionManager"
                       entity-manager-factory-ref="entityManagerFactory"
-                      factory-class="com.qlp.cms.orm.MyRepositoryFactoryBean" />
+                      factory-class="com.qlp.core.orm.MyRepositoryFactoryBean" />
     
     <!-- 引入属性配置文件 -->
 	<context:property-placeholder ignore-unresolvable="true" location="classpath*:/application.development.properties"/>

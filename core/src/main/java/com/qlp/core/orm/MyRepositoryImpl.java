@@ -1,4 +1,4 @@
-package com.qlp.cms.orm;
+package com.qlp.core.orm;
 
 
 import java.io.Serializable;
@@ -14,9 +14,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 public class MyRepositoryImpl<T, ID extends Serializable>
   extends SimpleJpaRepository<T, ID> implements MyRepository<T, ID> {
 
-  private final EntityManager entityManager;
+  @SuppressWarnings("unused")
+private final EntityManager entityManager;
 
-  public MyRepositoryImpl(JpaEntityInformation entityInformation,
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+public MyRepositoryImpl(JpaEntityInformation entityInformation,
                           EntityManager entityManager) {
     super(entityInformation, entityManager);
     this.entityManager = entityManager;

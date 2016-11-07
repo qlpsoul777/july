@@ -2,23 +2,39 @@ package com.qlp.core.entity;
 
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.GenericGenerator;
+
+@MappedSuperclass
+@Access(AccessType.PROPERTY)
 public class TopEntity {
 	
 	@Id
-	private String id;			//主键
-	private Date createTime;	//创建时间
+    @GeneratedValue(generator = "system-uuid")    
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")   
+	private String uuid;		//主键
+	
+	@Column(updatable = false)
+	private Date createTime = new Date();	//创建时间
+	
 	private Date updateTime;	//修改时间
+	
 	private String createBy;	//创建人
+	
 	private String updateBy;	//修改人
 	
 	
-	public String getId() {
-		return id;
+	public String getUuid() {
+		return uuid;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	public Date getCreateTime() {
 		return createTime;

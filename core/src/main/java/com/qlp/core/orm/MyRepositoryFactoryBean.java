@@ -1,4 +1,4 @@
-package com.qlp.cms.orm;
+package com.qlp.core.orm;
 
 import java.io.Serializable;
 
@@ -22,6 +22,7 @@ public class MyRepositoryFactoryBean<T extends JpaRepository<S, ID>, S, ID exten
 	
 	class MyRepositoryFactory extends JpaRepositoryFactory{
 
+	@SuppressWarnings("unused")
 	private final EntityManager entityManager;
 	
 	public MyRepositoryFactory(EntityManager entityManager) {
@@ -29,6 +30,7 @@ public class MyRepositoryFactoryBean<T extends JpaRepository<S, ID>, S, ID exten
 		this.entityManager = entityManager;
 	}
 	
+	@SuppressWarnings("hiding")
 	protected <T, ID extends Serializable> SimpleJpaRepository<?, ?> getTargetRepository(RepositoryInformation information,EntityManager entityManager) {
 		JpaEntityInformation<?, Serializable> entityInformation = getEntityInformation(information.getDomainType());
 		return new MyRepositoryImpl<T, ID>(entityInformation,entityManager);
