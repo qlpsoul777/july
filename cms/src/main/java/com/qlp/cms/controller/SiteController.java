@@ -1,11 +1,12 @@
 package com.qlp.cms.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,9 +22,15 @@ public class SiteController {
 	
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request,HttpServletResponse response){
-		List<Site> sites = siteService.findAll();
-		request.setAttribute("sites", sites);
+		Site site = new Site();
+		site.setId(1L);
+		Pageable pageable = new PageRequest(0, 10);
+		Page<Site> pageInfo = siteService.findPage(pageable,site);
+		request.setAttribute("pageInfo", pageInfo);
+		System.out.println(pageInfo.toString());
 		return "/cms/site/list";
 	}
+	
+	
 
 }

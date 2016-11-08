@@ -7,7 +7,7 @@
 <html>
 <body>
 <div>
-<c:forEach items="${sites }" var="site">
+<c:forEach items="${pageInfo.content }" var="site">
 	${site.id }-${site.name }
 </c:forEach>
 </div>
