@@ -3,15 +3,18 @@ package com.qlp.cms.entity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.qlp.core.entity.TopEntity;
+import com.qlp.core.entity.IdEntity;
 
 @Entity
 @Table(name = "T_CMS_SITE")
-public class Site extends TopEntity{
+public class Site extends IdEntity{
 	
 	private String name;
+	
 	private String num;
+	
 	private int status;
+	
 	private String path;
 	
 	public String getName() {

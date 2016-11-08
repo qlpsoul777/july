@@ -11,8 +11,11 @@
 
     <description>Spring公共配置</description>
     
+    <!-- 引入属性配置文件 -->
+	<context:property-placeholder ignore-unresolvable="true" location="classpath*:/application.development.properties"/>
+    
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
-    <context:component-scan base-package="com.qlp.cms.*">
+    <context:component-scan base-package="com.qlp.*">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     
@@ -27,7 +30,8 @@
     <!-- Jpa Entity Manager 配置 -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.qlp.cms" />
+       	 <!-- 实体管理器,自动扫描，代替以前的persistence.xml -->
+        <property name="packagesToScan" value="com.qlp.cms.entity" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="databasePlatform" value="${jdbc.sql.dialect}" />
@@ -44,13 +48,12 @@
     </bean>
     
     <!-- Spring Data Jpa配置 -->
-    <jpa:repositories base-package="com.qlp.core"
-                      transaction-manager-ref="transactionManager"
-                      entity-manager-factory-ref="entityManagerFactory"
-                      factory-class="com.qlp.core.orm.MyRepositoryFactoryBean" />
+    <jpa:repositories base-package="com.qlp.*"
+    base-class="com.qlp.core.orm.MyRepositoryImpl"
+    transaction-manager-ref="transactionManager"
+    entity-manager-factory-ref="entityManagerFactory"
+    factory-class="com.qlp.core.orm.MyRepositoryFactoryBean" />
     
-    <!-- 引入属性配置文件 -->
-	<context:property-placeholder ignore-unresolvable="true" location="classpath*:/application.development.properties"/>
     
     <!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">   
