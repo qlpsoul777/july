@@ -23,11 +23,10 @@ public class SiteController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request,HttpServletResponse response){
 		Site site = new Site();
-		site.setId(1L);
-		Pageable pageable = new PageRequest(0, 10);
+		site.setNum("org");
+		Pageable pageable = new PageRequest(0, 2);
 		Page<Site> pageInfo = siteService.findPage(pageable,site);
 		request.setAttribute("pageInfo", pageInfo);
-		System.out.println(pageInfo.toString());
 		return "/cms/site/list";
 	}
 	

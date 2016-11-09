@@ -4,6 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
+import org.springframework.data.domain.ExampleMatcher.MatcherConfigurer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +30,10 @@ public class SiteService {
 	}
 	
 	public Page<Site> findPage(Pageable pageable, Site site) {
-		siteDao.findAll(Example.of(site), pageable);
-		return null;
+		ExampleMatcher e = ExampleMatcher.matching()
+				  .withMatcher("num", GenericPropertyMatchers.storeDefaultMatching()).withIgnorePaths("createTime","status");
+		
+		return siteDao.findAll(Example.of(site,e), pageable);
 	}
+
 }
