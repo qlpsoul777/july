@@ -18,10 +18,9 @@ public class MyRepositoryFactory<T, I extends Serializable> extends JpaRepositor
 		this.entityManager = entityManager;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	protected Object getTargetRepository(RepositoryInformation information){
 		JpaEntityInformation<?, Serializable> entityInformation = getEntityInformation(information.getDomainType());
-		return new MyRepositoryImpl(entityInformation,this.entityManager);
+		return new MyRepositoryImpl<>(entityInformation,this.entityManager);
 	}
 	
 	protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
