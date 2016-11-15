@@ -14,7 +14,7 @@
   <name>core</name>
   
   <properties>
-    <lang3.version>3.4</lang3.version>
+    
   </properties>
   
   <dependencies>
@@ -109,7 +109,6 @@
   	<dependency>
 		<groupId>org.apache.commons</groupId>
 		<artifactId>commons-lang3</artifactId>
-		<version>${lang3.version}</version>
 	</dependency>
     <dependency>
       <groupId>junit</groupId>

@@ -18,6 +18,13 @@
 					<h3>
 						站点列表
 					</h3>
+					<div>
+						<form id="queryForm" action="${ctx }/site/list">
+							<input id="totalSize" type="hidden" name="totalSize" value="${pageInfo.totalPages }"/>
+		  					<input id="pageSize" type="hidden" name="pageSize" value="${pageInfo.size }"/>
+		  					<input id="currentPage" type="hidden" name="currentPage" value="${pageInfo.number }"/>
+						</form>
+					</div>
 					<div class="smart-widget-body" style="padding:10px;">
 						<table class="table table-bordered">
 				      		<thead>
@@ -48,11 +55,23 @@
 					        	</tr>
 					      	</tbody>
 					   </table>
+					   <div class="row">
+					   <ul class="pagination" id="pageDiv"></ul>
+					   </div>
 					</div>
 				</div>
 			</div>
   		</div>
 		<script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 		<script src="${ctx}/static/js/bootstrap.min.js"></script>
+		<script src="${ctx}/static/js/page_sync.js"></script>
+		<script type="text/javascript">
+		$(function () {
+	    	var currentPage = $('#currentPage').val(),
+	    	totalSize = $('#totalSize').val(),
+	    	pageSize = $('#pageSize').val();
+	    	PageSync.init(currentPage,pageSize,totalSize);//分页
+	    });
+		</script>
 	</body>
 </html>

@@ -26,7 +26,7 @@ public class UIdEntity {
 	private String updateBy;	//修改人
 	
 	@Id
-	@Column(length = 50)
+	@Column
     @GeneratedValue(generator = "system-uuid")    
     @GenericGenerator(name = "system-uuid", strategy = "uuid") 
 	public String getId() {
@@ -36,7 +36,7 @@ public class UIdEntity {
 		this.id = id;
 	}
 	
-	@Column(name="create_time",length = 30,updatable = false)
+	@Column(name="create_time",updatable = false)
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -44,7 +44,7 @@ public class UIdEntity {
 		this.createTime = createTime;
 	}
 	
-	@Column(name="update_time",length = 30)
+	@Column(name="update_time")
 	public Date getUpdateTime() {
 		return updateTime;
 	}
@@ -52,7 +52,7 @@ public class UIdEntity {
 		this.updateTime = updateTime;
 	}
 	
-	@Column(name="create_by",length = 30)
+	@Column(name="create_by")
 	public String getCreateBy() {
 		return createBy;
 	}
@@ -60,7 +60,7 @@ public class UIdEntity {
 		this.createBy = createBy;
 	}
 	
-	@Column(name="update_by",length = 30)
+	@Column(name="update_by")
 	public String getUpdateBy() {
 		return updateBy;
 	}
