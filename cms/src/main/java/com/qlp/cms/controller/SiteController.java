@@ -33,7 +33,6 @@ public class SiteController {
 		Pageable pageable = new PageRequest(pageNum, pageSize, new Sort(Sort.Direction.ASC, "createTime"));
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("a_name_li", "阿");
-        map.put("o_name_li", "生");
         Page<Site> pageInfo = siteService.queryPageByMap(map,pageable);
 		request.setAttribute("pageInfo", pageInfo);
 		return "/cms/site/list";

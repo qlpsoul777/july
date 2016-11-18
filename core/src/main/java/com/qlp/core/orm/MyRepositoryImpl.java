@@ -224,8 +224,6 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 		return (Session) this.em.getDelegate();
 	}
 
-	
- 
 
 }
 

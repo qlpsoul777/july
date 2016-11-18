@@ -14,7 +14,7 @@
   
   <properties>
   	<core.version>0.0.1</core.version>
-  	
+  	<jstl.version>1.2</jstl.version>
   </properties>
   
   <dependencies>
@@ -34,7 +34,7 @@
      <dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>jstl</artifactId>
-		<version>1.2</version>
+		<version>${jstl.version}</version>
 	 </dependency>    
      <dependency>
          <groupId>mysql</groupId>

@@ -22,6 +22,7 @@ public class SiteService {
 	@Autowired
 	private SiteDao siteDao;
 	
+	@Transactional(readOnly = false)
 	public Site save(Site site){
 		return siteDao.saveAndFlush(site);
 	}

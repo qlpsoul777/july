@@ -3,7 +3,7 @@ package com.qlp.core.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 /**
- * 反射工具类摘自spring core包
+ * 反射工具类---摘自spring core包
  * @author qlp
  *
  */

@@ -16,7 +16,7 @@
 		location="classpath*:/application.development.properties"/>
     
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
-    <context:component-scan base-package="com.qlp.cms.*">
+    <context:component-scan base-package="com.qlp.core.*">
         <context:exclude-filter type="annotation" 
         	expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
@@ -35,7 +35,7 @@
     	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
        	 <!-- 实体管理器,自动扫描，代替以前的persistence.xml -->
-        <property name="packagesToScan" value="com.qlp.cms.entity" />
+        <property name="packagesToScan" value="com.qlp.core.test.entity" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="databasePlatform" value="${jdbc.sql.dialect}" />
@@ -54,7 +54,7 @@
     </bean>
     
     <!-- Spring Data Jpa配置 -->
-    <jpa:repositories base-package="com.qlp.core.orm,com.qlp.cms.dao"
+    <jpa:repositories base-package="com.qlp.core"
     	base-class="com.qlp.core.orm.MyRepositoryImpl"
     	transaction-manager-ref="transactionManager"
     	entity-manager-factory-ref="entityManagerFactory"

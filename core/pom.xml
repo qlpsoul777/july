@@ -65,21 +65,38 @@
          <groupId>org.springframework</groupId>
          <artifactId>spring-webmvc</artifactId>
      </dependency>
+     <dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+	 </dependency>
      <!-- spring end-->
-        
+     
+     <!-- hibernate start -->
+     <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-core</artifactId>
+     </dependency>
+     <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-entitymanager</artifactId>
+     </dependency>
+     <!-- hibernate end -->
+     
+     <dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>druid</artifactId>
+		<scope>test</scope>
+	</dependency> 
+	<dependency>
+         <groupId>mysql</groupId>
+         <artifactId>mysql-connector-java</artifactId>
+         <scope>test</scope>
+    </dependency>  
          <dependency>
 	        <groupId>org.springframework.data</groupId>
 	        <artifactId>spring-data-jpa</artifactId>
     	</dependency>
         
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

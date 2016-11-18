@@ -3,7 +3,8 @@ package com.qlp.core.utils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 
+ * 字符串工具类
+ * ---继承自apache.commons.lang3.StringUtils
  * @author qlp
  *
  */
