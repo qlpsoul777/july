@@ -5,15 +5,17 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.qlp.core.entity.BaseEntity;
+
 @Entity
 @Table(name = "city")
-public class City {
+public class City extends BaseEntity{
 	
 	private Long id;
 	private String name;
 	private String code;
 	private String dist;
-	private String popu;
+	private Long popu;
 	
 	@Id
 	@Column(name="ID")
@@ -49,10 +51,10 @@ public class City {
 	}
 	
 	@Column(name="Population")
-	public String getPopu() {
+	public Long getPopu() {
 		return popu;
 	}
-	public void setPopu(String popu) {
+	public void setPopu(Long popu) {
 		this.popu = popu;
 	}
 	

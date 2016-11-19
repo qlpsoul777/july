@@ -7,6 +7,8 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @Access(AccessType.PROPERTY)
@@ -32,6 +34,7 @@ public class IdEntity {
 	}
 	
 	@Column(name="create_time",updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -40,6 +43,7 @@ public class IdEntity {
 	}
 	
 	@Column(name="update_time")
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getUpdateTime() {
 		return updateTime;
 	}

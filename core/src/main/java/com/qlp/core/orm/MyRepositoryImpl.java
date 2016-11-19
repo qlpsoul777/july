@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaQuery;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projection;
@@ -26,8 +27,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.util.CollectionUtils;
 
+import com.qlp.core.utils.CollectionUtil;
 import com.qlp.core.utils.ReflectionUtil;
 import com.qlp.core.utils.StringUtil;
 
@@ -41,6 +42,7 @@ import com.qlp.core.utils.StringUtil;
  * @param <ID> 实体主键类型eg:String,Long...
  */
 @NoRepositoryBean
+@SuppressWarnings("unchecked")
 public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements MyRepository<T,ID>{
 
 	private final EntityManager em;
@@ -56,14 +58,20 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	 * 通过map参数查询列表
 	 * 	map中的key值是对应实体对象的属性加后缀的形式
 	 */
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public List<T> queryByMap(Map<String, Object> map) {
 		Criteria criteria = mapToCriteria(map);
 		return (List<T>)criteria.list();
 	}
 	
-	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> queryByMap(Map<String, Object> map, Sort sort) {
+		Criteria criteria = mapToCriteria(map);
+		createCriteria(criteria,sort);
+		return (List<T>)criteria.list();
+	}
+	
 	@Override
 	public Page<T> queryPageByMap(Map<String, Object> map, Pageable pageable) {
 		Criteria c = mapToCriteria(map);
@@ -90,7 +98,6 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
     }
 	
 
-	@SuppressWarnings("unchecked")
 	private long countCriteriaList(Criteria c) {
 		CriteriaImpl impl = (CriteriaImpl) c;
         // 先把Projection、ResultTransformer、OrderBy取出来,清空三者后再执行Count操作
@@ -121,7 +128,7 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	 */
 	private Criteria mapToCriteria(Map<String, Object> map) {
 		Criteria criteria = createCriteria();
-		if(!CollectionUtils.isEmpty(map)){
+		if(CollectionUtil.isNotBlank(map)){
 			for(String key : map.keySet()){
 				criteria.add(addConditions(key,map.get(key)));
 			}
@@ -223,6 +230,18 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	private Session getSession() {
 		return (Session) this.em.getDelegate();
 	}
+
+	@Override
+	public List<T> queryByCriteria() {
+		CriteriaQuery qu = (CriteriaQuery) em.getCriteriaBuilder().createQuery(clazz);
+		
+		Criteria criteria = createCriteria();
+		criteria.add(Restrictions.and(Restrictions.eq("code", "AFG")));
+		criteria.add(Restrictions.or(Restrictions.eq("code", "BRA")));
+		return criteria.list();
+	}
+
+	
 
 
 }
