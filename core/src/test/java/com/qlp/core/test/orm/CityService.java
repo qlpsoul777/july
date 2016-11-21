@@ -6,6 +6,8 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,10 @@ public class CityService {
 	
 	public List<City> findByCriteria(){
 		return cityDao.queryByCriteria();
+	}
+	
+	public Page<City> findPageByMap(Map<String,Object> map,Pageable pageable){
+		return cityDao.queryPageByMap(map, pageable);
 	}
 
 }

@@ -8,12 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaQuery;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -28,6 +33,8 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import com.qlp.core.Exception.ErrorDetail.BusiErrorlEnum;
+import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.CollectionUtil;
 import com.qlp.core.utils.ReflectionUtil;
 import com.qlp.core.utils.StringUtil;
@@ -75,7 +82,10 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	@Override
 	public Page<T> queryPageByMap(Map<String, Object> map, Pageable pageable) {
 		Criteria c = mapToCriteria(map);
+//		List<T> list = c.list();
         long total = countCriteriaList(c);
+//        long total = list.size();
+        
         c.setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize());
         createCriteria(c, pageable.getSort());
 		Page<T> page = new PageImpl<T>(c.list(), pageable, total);
@@ -128,9 +138,33 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	 */
 	private Criteria mapToCriteria(Map<String, Object> map) {
 		Criteria criteria = createCriteria();
+		
 		if(CollectionUtil.isNotBlank(map)){
+			int conNum = 0,disNum = 0;
+			Conjunction conjunction = Restrictions.conjunction();
+			Disjunction disjunction = Restrictions.disjunction();
+			
 			for(String key : map.keySet()){
-				criteria.add(addConditions(key,map.get(key)));
+				String[] exp = StringUtil.split(key,"_");
+				String suffix = null;
+				if(exp.length == 3){
+					suffix = exp[2];
+				}
+				if("a".equals(exp[0])){
+					conjunction.add(addPredicates(map.get(key),exp[1],suffix));
+					conNum++;
+				}else{
+					disjunction.add(addPredicates(map.get(key),exp[1],suffix));
+					disNum++;
+				}
+			}
+			
+			AssertUtil.assertTrue((conNum==0), BusiErrorlEnum.INPUT_NOT_EXIST, "查询条件不合法,查询条件不能都是OR");
+			
+			if(disNum == 0){
+				criteria.add(conjunction);
+			}else{
+				criteria.add(Restrictions.or(conjunction,disjunction));
 			}
 		}
 		
@@ -158,6 +192,7 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 		if(exp.length == 3){
 			suffix = exp[2];
 		}
+		
 		if("a".equals(exp[0])){
 			return Restrictions.and(addPredicates(object,exp[1],suffix));
 		}else{
@@ -233,12 +268,21 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 
 	@Override
 	public List<T> queryByCriteria() {
-		CriteriaQuery qu = (CriteriaQuery) em.getCriteriaBuilder().createQuery(clazz);
+		CriteriaBuilder builder = this.em.getCriteriaBuilder();
+		CriteriaQuery<T> query = (CriteriaQuery<T>) builder.createQuery();
 		
-		Criteria criteria = createCriteria();
+		Root<T> root = query.from(this.clazz);
+		query.select(root);
+		
+		Predicate p = builder.and(builder.equal(root.get("code"), "AFG"));
+		p = builder.or(p,builder.equal(root.get("code"), "BRA"));
+		
+		
+		return this.em.createQuery(query.where(p)).getResultList();
+		/*Criteria criteria = createCriteria();
 		criteria.add(Restrictions.and(Restrictions.eq("code", "AFG")));
 		criteria.add(Restrictions.or(Restrictions.eq("code", "BRA")));
-		return criteria.list();
+		return criteria.list();*/
 	}
 
 	
