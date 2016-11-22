@@ -3,9 +3,21 @@ package com.qlp.core.utils;
 import java.util.Map;
 
 import com.qlp.core.Exception.ErrorDetail;
+import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.Exception.MyException;
 
 public final class AssertUtil {
+	
+	/**
+	 * 判断对象不为null,否则抛出MyException
+	 * @param obj
+	 * @param detail
+	 */
+	public static void assertNotNull(Object obj, BusiErrorEnum detail) {
+		if(null == obj){
+			throw new MyException(detail);
+		}
+	}
 	
 	/**
 	 * 判断对象不为null,否则抛出MyException
@@ -18,6 +30,8 @@ public final class AssertUtil {
 			throw new MyException(detail, msg);
 		}
 	}
+	
+	
 	
 	/**
 	 * 判断字符串不为blank,否则抛出MyException
@@ -42,5 +56,7 @@ public final class AssertUtil {
 			throw new MyException(detail, msg);
 		}
 	}
+
+	
 
 }

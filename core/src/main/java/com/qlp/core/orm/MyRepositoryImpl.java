@@ -33,7 +33,7 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.qlp.core.Exception.ErrorDetail.BusiErrorlEnum;
+import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.CollectionUtil;
 import com.qlp.core.utils.ReflectionUtil;
@@ -159,7 +159,7 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 				}
 			}
 			
-			AssertUtil.assertTrue((conNum==0), BusiErrorlEnum.INPUT_NOT_EXIST, "查询条件不合法,查询条件不能都是OR");
+			AssertUtil.assertTrue((conNum==0), BusiErrorEnum.INPUT_NOT_EXIST, "查询条件不合法,查询条件不能都是OR");
 			
 			if(disNum == 0){
 				criteria.add(conjunction);
@@ -186,19 +186,7 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	 * @param object
 	 * @return
 	 */
-	private Criterion addConditions(String key, Object object) {
-		String[] exp = StringUtil.split(key,"_");
-		String suffix = null;
-		if(exp.length == 3){
-			suffix = exp[2];
-		}
-		
-		if("a".equals(exp[0])){
-			return Restrictions.and(addPredicates(object,exp[1],suffix));
-		}else{
-			return Restrictions.or(addPredicates(object,exp[1],suffix));
-		}
-	}
+	
 
 	/**
 	 * 添加查询条件

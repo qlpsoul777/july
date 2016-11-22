@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
-import com.qlp.core.Exception.ErrorDetail.BusiErrorlEnum;
+import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.CollectionUtil;
 import com.qlp.core.utils.LogUtil;
@@ -70,7 +70,7 @@ public class CityServiceTest extends BaseJdbcTest{
 		map.put("a_code", "BRA");
 		Pageable pageable = new PageRequest(0, 10, new Sort(Sort.Direction.ASC, "code"));
 		Page<City> pageInfo = cityService.findPageByMap(map, pageable);
-		AssertUtil.assertNotBlank(map, BusiErrorlEnum.OUTPUT_NOT_FOUND, "查询结果为空");
+		AssertUtil.assertNotBlank(map, BusiErrorEnum.OUTPUT_NOT_FOUND, "查询结果为空");
 		LogUtil.info(logger, "分页查询结果总页数：{0}\n总条数：{1}\n内容：{2}", pageInfo.getTotalPages(),pageInfo.getTotalElements(),pageInfo.getContent().toString());
 	}
 

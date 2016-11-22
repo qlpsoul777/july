@@ -28,13 +28,13 @@ public interface ErrorDetail {
 	 * @author qlp
 	 *
 	 */
-	public enum SysErrorlEnum implements ErrorDetail{
+	public enum SysErrorEnum implements ErrorDetail{
 		NULL_EXCEPTION("NullPointerException","空指针异常");
 		
 		private final String code;
 	    private final String msg;
 	    
-	    SysErrorlEnum(String code,String msg){
+	    SysErrorEnum(String code,String msg){
 	    	this.code = code;
 	    	this.msg = msg;
 	    }
@@ -59,14 +59,14 @@ public interface ErrorDetail {
 	 * @author qlp
 	 *
 	 */
-	public enum BusiErrorlEnum implements ErrorDetail{
+	public enum BusiErrorEnum implements ErrorDetail{
 		INPUT_NOT_EXIST("NULL","输入参数不能为空"),
 		OUTPUT_NOT_FOUND("NOT_FOUND","输出不能为空");
 		
 		private final String code;
 	    private final String msg;
 	    
-	    BusiErrorlEnum(String code,String msg){
+	    BusiErrorEnum(String code,String msg){
 	    	this.code = code;
 	    	this.msg = msg;
 	    }

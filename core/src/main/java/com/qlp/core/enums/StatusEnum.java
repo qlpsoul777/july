@@ -1,11 +1,12 @@
 package com.qlp.core.enums;
 
+
 /**
  * 状态枚举
  * @author qlp
  *
  */
-public enum StatusEnum {
+public enum StatusEnum{
 	
 	DISABLE(0,"禁用"),ENABLE(1,"启用");
 	
@@ -23,5 +24,14 @@ public enum StatusEnum {
 	
 	public String getDesc(){
 		return desc;
+	}
+
+	public static StatusEnum from(Integer code) {
+		for (StatusEnum status : StatusEnum.values()) {
+			if(status.getCode() == code){
+				return status;
+			}
+		}
+		return null;
 	}
 }

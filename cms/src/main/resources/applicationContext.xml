@@ -35,7 +35,7 @@
     	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
        	 <!-- 实体管理器,自动扫描，代替以前的persistence.xml -->
-        <property name="packagesToScan" value="com.qlp.cms.entity" />
+        <property name="packagesToScan" value="com.qlp.cms" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="databasePlatform" value="${jdbc.sql.dialect}" />

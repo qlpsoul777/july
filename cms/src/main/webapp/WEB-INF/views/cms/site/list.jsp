@@ -20,7 +20,7 @@
 					</h3>
 					<div class="col-xs-12 col-md-12">
 						<a href="${ctx }/site/edit" class="btn btn-primary">新增</a>
-						<button type="button" class="btn btn-danger">删除</button>
+						<a href="${ctx }/site/delete" class="btn btn-danger">删除</a>
 						<form id="queryForm" action="${ctx }/site/list">
 							<input id="totalSize" type="hidden" name="totalSize" value="${pageInfo.totalPages }"/>
 		  					<input id="pageSize" type="hidden" name="pageSize" value="${pageInfo.size }"/>
@@ -50,7 +50,7 @@
 						        			<td>${site.name }</td>
 						        			<td>${site.num }</td>
 						        			<td>${site.path }</td>
-						        			<td>${site.status }</td>
+						        			<td>${site.status.desc }</td>
 						        			<td>${site.createBy }</td>
 						        			<td><a href="${ctx }/site/edit?id=${site.id}">编辑</a></td>
 						        			

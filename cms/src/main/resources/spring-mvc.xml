@@ -11,7 +11,7 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     
-    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" conversion-service="conversionService"/>
 
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 	    <property name="mediaTypes">
@@ -22,6 +22,15 @@
 	        </value>
 	    </property>
 	</bean>
+	
+	<bean id="conversionService"
+        class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.qlp.core.converter.StringToEnumConverterFactory" />
+            </set>
+        </property>
+    </bean>
 
     <mvc:default-servlet-handler/>
 

@@ -14,6 +14,10 @@ public final class LogUtil {
 	public static void info(Logger logger, String msg, Object... params) {
 		logger.info(format(msg,params));
 	}
+	
+	public static void error(Logger logger, String msg, Object... params) {
+		logger.error(format(msg,params));
+	}
 
 	private static String format(String msg, Object... params) {
 		if (params != null && params.length != 0) {

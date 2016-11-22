@@ -26,7 +26,6 @@ public class UIdEntity {
 	private String updateBy;	//修改人
 	
 	@Id
-	@Column
     @GeneratedValue(generator = "system-uuid")    
     @GenericGenerator(name = "system-uuid", strategy = "uuid") 
 	public String getId() {
