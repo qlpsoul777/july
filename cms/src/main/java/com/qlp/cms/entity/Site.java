@@ -8,18 +8,22 @@ import javax.persistence.Table;
 import com.qlp.core.converter.StatusEnumConverter;
 import com.qlp.core.entity.IdEntity;
 import com.qlp.core.enums.StatusEnum;
-
+/**
+ * 站点实体
+ * @author july
+ *
+ */
 @Entity
 @Table(name = "T_CMS_SITE")
 public class Site extends IdEntity{
 	
-	private String name;	//站点名称
+	private String name;			//站点名称
 	
-	private String num;		//站点编号
+	private String num;				//站点编号
 	
-	private StatusEnum status = StatusEnum.ENABLE;		//站点状态
+	private StatusEnum status;		//站点状态
 	
-	private String path;		//站点访问路径
+	private String path;			//站点访问路径
 	
 	private String introduction;	//站点简介
 	
