@@ -5,6 +5,6 @@ import com.qlp.core.orm.MyRepository;
 
 public interface SiteDao extends MyRepository<Site, Long>{
 	
-	public Long deleteByIdIn(Long[] ids);
+	public void deleteByIdIn(Long[] ids);
 
 }

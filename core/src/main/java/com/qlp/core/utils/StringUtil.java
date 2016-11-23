@@ -1,5 +1,7 @@
 package com.qlp.core.utils;
 
+import java.util.StringTokenizer;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -28,6 +30,16 @@ public class StringUtil extends StringUtils{
 			in = sb.toString();
 		}
 		return in;
+	}
+
+	public static Long[] toLongArray(String input, String septate) {
+		StringTokenizer st = new StringTokenizer(input, septate);
+		Long[] result = new Long[st.countTokens()];
+		int count = 0;
+		while(st.hasMoreElements()){
+			result[count++] = Long.parseLong((String) st.nextElement());
+		}
+		return result;
 	}
 
 }

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.qlp.cms.dao.SiteDao;
 import com.qlp.cms.entity.Site;
 import com.qlp.core.utils.LogUtil;
+import com.qlp.core.utils.StringUtil;
 
 @Service("siteService")
 @Transactional(readOnly = true)
@@ -37,14 +38,12 @@ public class SiteService {
 	}
 	
 	@Transactional(readOnly = false)
-	public void deleteByIds(String[] ids){
-		LogUtil.info(logger, "待删除ids:{0}", ids.toString());
-		if((ids != null) && (ids.length > 0)){
-			Long[] id = new Long[ids.length];
-			for (int i = 0; i < ids.length; i++) {
-				id[i] = Long.parseLong(ids[i]);
-			}
-//			siteDao.deleteByIdIn(id);
+	public void deleteByIds(String ids){
+		LogUtil.info(logger, "待删除ids:{0}", ids);
+		if(StringUtil.isNotBlank(ids)){
+			Long[] id = StringUtil.toLongArray(ids,",");
+			LogUtil.info(logger, "删除:{0}条数据", id.length);
+			siteDao.deleteByIdIn(id);
 		}
 	}
 	

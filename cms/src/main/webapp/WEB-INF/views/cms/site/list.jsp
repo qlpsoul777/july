@@ -20,7 +20,7 @@
 					</h3>
 					<div class="col-xs-12 col-md-12">
 						<a href="${ctx }/site/edit" class="btn btn-primary">新增</a>
-						<a href="${ctx }/site/delete" class="btn btn-danger">删除</a>
+						<a id="batchDel" class="btn btn-danger">删除</a>
 						<form id="queryForm" action="${ctx }/site/list">
 							<input id="totalSize" type="hidden" name="totalSize" value="${pageInfo.totalPages }"/>
 		  					<input id="pageSize" type="hidden" name="pageSize" value="${pageInfo.size }"/>
@@ -46,13 +46,16 @@
 					        	<tr>
 						        	<c:forEach items="${pageInfo.content }" var="site">
 						        		<tr>
-						        			<td><input name="chkName" type="checkbox" value="${site.id }"/></td>
+						        			<td><input name="chkName" type="checkbox" value="${site.id }" /></td>
 						        			<td>${site.name }</td>
 						        			<td>${site.num }</td>
 						        			<td>${site.path }</td>
 						        			<td>${site.status.desc }</td>
 						        			<td>${site.createBy }</td>
-						        			<td><a href="${ctx }/site/edit?id=${site.id}">编辑</a></td>
+						        			<td>
+						        				<a href="${ctx }/site/edit?id=${site.id}">编辑</a>
+						        				<a href="${ctx }/site/manager?id=${site.id}">管理</a>
+						        			</td>
 						        			
 						        		</tr>
 						        	</c:forEach>
@@ -71,16 +74,40 @@
 		<script src="${ctx}/static/js/page_sync.js"></script>
 		<script type="text/javascript">
 		$(function () {
+			//分页
 	    	var currentPage = $('#currentPage').val(),
 	    	totalSize = $('#totalSize').val(),
 	    	pageSize = $('#pageSize').val();
-	    	PageSync.init(currentPage,pageSize,totalSize);//分页
+	    	PageSync.init(currentPage,pageSize,totalSize);
 	    	
+	    	//全选
 	    	$('#chkAll').on('click',function(){
 	    		$('input[name="chkName"]').prop('checked',$(this).prop('checked'));
 	    	});
 	    	
+	    	//删除
+	    	$('#batchDel').on('click',function(){
+	    		var checked = checkedCheckBox();
+	    		if(checked.length > 0){
+		    		if(confirm("确定删除吗？")){
+		    			window.location.href = "${ctx}/site/delete?ids=" + checked;
+		    		}
+	    		}
+	    	});
+	    	
 	    });
+		
+		//获取选中的checkbox值
+		function checkedCheckBox(){
+			var checked = [];
+			$("input[name='chkName']:checked").each(function(){
+				checked.push($(this).val());
+			});
+			if(checked.length<=0){
+				alert("请选择");
+			}
+			return checked;
+		}
 		</script>
 	</body>
 </html>

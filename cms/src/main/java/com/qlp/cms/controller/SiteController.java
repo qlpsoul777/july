@@ -57,7 +57,7 @@ public class SiteController {
 	
 	@RequestMapping("/delete")
 	public String delete(HttpServletRequest request){
-		String[] ids =  request.getParameterValues("chkName");
+		String ids =  request.getParameter("ids");
 		siteService.deleteByIds(ids);
 		return "redirect: /cms/site/list";
 	}
