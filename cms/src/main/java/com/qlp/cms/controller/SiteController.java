@@ -16,7 +16,11 @@ import com.qlp.cms.service.SiteService;
 import com.qlp.core.enums.StatusEnum;
 import com.qlp.core.utils.DataConvertUtil;
 import com.qlp.core.utils.StringUtil;
-
+/**
+ * 站点管理controller
+ * @author july
+ *
+ */
 @Controller
 @RequestMapping(value = "/site")
 public class SiteController {
@@ -25,25 +29,21 @@ public class SiteController {
 	private SiteService siteService;
 	
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request){
+	public String list(HttpServletRequest request,@ModelAttribute Site site){
 		int pageNum = Integer.parseInt(request.getParameter("currentPage")== null?"0":request.getParameter("currentPage"));
 		int pageSize = Integer.parseInt(request.getParameter("pageSize")== null?"10":request.getParameter("pageSize"));
 		
 		Pageable pageable = new PageRequest(pageNum, pageSize, new Sort(Sort.Direction.ASC, "createTime"));
-        Site site = new Site();
-        site.setStatus(StatusEnum.ENABLE);
         Page<Site> pageInfo = siteService.queryPageBySite(site,pageable);
 		request.setAttribute("pageInfo", pageInfo);
+		request.setAttribute("site", site);
 		return "/cms/site/list";
 	}
 	
 	@RequestMapping("/edit")
 	public String edit(HttpServletRequest request){
 		String id = request.getParameter("id");
-		Site site = new Site();
-		if(StringUtil.isNotBlank(id)){
-			site = siteService.query(DataConvertUtil.toLong(id));
-		}
+		Site site = siteService.query(id);
 		request.setAttribute("site", site);
 		request.setAttribute("statuss", StatusEnum.values());
 		return "/cms/site/edit";
@@ -52,14 +52,14 @@ public class SiteController {
 	@RequestMapping("/save")
 	public String save(HttpServletRequest request,@ModelAttribute Site site){
 		siteService.save(site);
-		return "redirect: /cms/site/list";
+		return "redirect:list";
 	}
 	
 	@RequestMapping("/delete")
 	public String delete(HttpServletRequest request){
 		String ids =  request.getParameter("ids");
 		siteService.deleteByIds(ids);
-		return "redirect: /cms/site/list";
+		return "redirect:list";
 	}
 
 }

@@ -21,12 +21,27 @@
 					<div class="col-xs-12 col-md-12">
 						<a href="${ctx }/site/edit" class="btn btn-primary">新增</a>
 						<a id="batchDel" class="btn btn-danger">删除</a>
-						<form id="queryForm" action="${ctx }/site/list">
+						<form id="queryForm" class="form-horizontal" action="${ctx }/site/list">
 							<input id="totalSize" type="hidden" name="totalSize" value="${pageInfo.totalPages }"/>
 		  					<input id="pageSize" type="hidden" name="pageSize" value="${pageInfo.size }"/>
 		  					<input id="currentPage" type="hidden" name="currentPage" value="${pageInfo.number }"/>
-		  					
-		  					
+		  					<div class="form-group">
+							    <label for="name" class="col-sm-2 control-label">站点中文名</label>
+							    <div class="col-sm-10">
+							      <input type="text" class="form-control" id="name" name="name" value="${site.name }"/>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <label for="num" class="col-sm-2 control-label">站点编号</label>
+							    <div class="col-sm-10">
+							      <input type="text" class="form-control" id="num" name="num" value="${site.num }">
+							    </div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-offset-2 col-sm-10">
+							      <button type="submit" class="btn btn-default">搜索</button>
+							    </div>
+							</div>
 						</form>
 					</div>
 					<div class="smart-widget-body">

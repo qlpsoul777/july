@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @Access(AccessType.PROPERTY)
-public class IdEntity {
+public class IdEntity extends BaseEntity{
 	
 	private Long id;		//主键
 	
