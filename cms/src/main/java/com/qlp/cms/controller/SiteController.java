@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.qlp.cms.entity.Site;
 import com.qlp.cms.service.SiteService;
+import com.qlp.core.Exception.ErrorDetail;
+import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.enums.StatusEnum;
-import com.qlp.core.utils.DataConvertUtil;
-import com.qlp.core.utils.StringUtil;
+import com.qlp.core.utils.AssertUtil;
 /**
  * 站点管理controller
  * @author july
@@ -60,6 +61,15 @@ public class SiteController {
 		String ids =  request.getParameter("ids");
 		siteService.deleteByIds(ids);
 		return "redirect:list";
+	}
+	
+	@RequestMapping("/manager")
+	public String manager(HttpServletRequest request){
+		String id = request.getParameter("id");
+		Site site = siteService.query(id);
+		AssertUtil.assertNotNull(site, BusiErrorEnum.OUTPUT_NOT_FOUND, "未查询到站点信息");
+		request.getSession().setAttribute("SITEINFO", site);
+		return "/cms/catalog/manager";
 	}
 
 }
