@@ -106,7 +106,7 @@ public class Catalog extends IdEntity{
 		this.imgPath = imgPath;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "site_id")
 	public Site getSite() {
 		return site;
@@ -135,6 +135,13 @@ public class Catalog extends IdEntity{
 		this.children = children;
 	}
 	
-	
+	public Catalog() {
+		super();
+	}
+
+	public Catalog(String name) {
+		super();
+		this.name = name;
+	}
 
 }

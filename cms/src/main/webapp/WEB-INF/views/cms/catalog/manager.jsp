@@ -10,6 +10,7 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
+	    <link href="${ctx}/static/js/ztree3/zTreeStyle/zTreeStyle.css" rel="stylesheet">
   	</head>
 	<body>
 		<div class="container">
@@ -29,24 +30,46 @@
 				  </div>
 				</nav>
 	  		</div>
-	  		<div class="row">
+	  		<div class="row" style="padding-top: 60px;">
 	  			<div class="col-md-4">
-	  				<iframe id="asideNav" frameborder="0" name="menu" scrolling="yes"></iframe>
+	  				<ul id="catalogTree" class="ztree"></ul>
 	  			</div>
 	  			<div class="col-md-8">
-	  				<iframe id="iframeId" frameborder="0"  name="main"  scrolling="yes"></iframe>
+	  			hello
+	  				<!-- <iframe id="iframeId" frameborder="0"  name="main"  scrolling="yes"></iframe> -->
 	  			</div>
 	  		</div>
 			
   		</div>
 		<script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 		<script src="${ctx}/static/js/bootstrap.min.js"></script>
+		<script src="${ctx}/static/js/ztree3/jquery.ztree.core.min.js"></script>
 		<script type="text/javascript">
 		$(function () {
-			
+			loadTree();
 	    	
 	    });
-		
+	
+		var zTreeObj;
+		function loadTree(){
+			var setting = {
+				view : {
+					dblClickExpand : false,
+					selectedMulti : false
+				}
+			};
+			$.ajax({
+				url : "${ctx}/catalog/tree",
+				type : "GET",
+				async : false,
+				dataType : "json",
+				success : function(data){
+					if(data){
+						zTreeObj = $.fn.zTree.init($("#catalogTree"), setting, data);
+					}
+				}
+			});
+		}
 		</script>
 	</body>
 </html>

@@ -26,7 +26,7 @@
    	<logback.version>1.1.6</logback.version>
    	<lang3.version>3.4</lang3.version>
    	<collections4.version>4.1</collections4.version>
-   	
+   	<fastjson.version>1.2.7</fastjson.version>
    	
   	<log4j.version>1.2.14</log4j.version>
   	<commons-io.version>2.4</commons-io.version>
@@ -167,7 +167,13 @@
 		</dependency>
         <!-- apache commons end -->
         
-        
+        <!-- json start-->
+        <dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+        <!-- json end-->
         
         <dependency>
             <groupId>commons-io</groupId>

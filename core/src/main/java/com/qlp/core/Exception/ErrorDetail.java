@@ -29,7 +29,8 @@ public interface ErrorDetail {
 	 *
 	 */
 	public enum SysErrorEnum implements ErrorDetail{
-		NULL_EXCEPTION("NullPointerException","空指针异常");
+		NULL_EXCEPTION("NullPointerException","空指针异常"),
+		DOMAIN_NOT_FOUND("ClassNotFoundException","对象无法获取");
 		
 		private final String code;
 	    private final String msg;
