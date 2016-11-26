@@ -17,7 +17,7 @@ public class UIdEntity {
 	
 	private String id;		//主键
 	
-	private Date createTime = new Date();	//创建时间
+	private Date createTime;	//创建时间
 	
 	private Date updateTime;	//修改时间
 	

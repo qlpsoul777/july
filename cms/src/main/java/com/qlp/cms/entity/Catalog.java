@@ -12,7 +12,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.qlp.core.converter.StatusEnumConverter;
 import com.qlp.core.entity.IdEntity;
@@ -34,6 +38,7 @@ public class Catalog extends IdEntity{
 	private String introduction;		//栏目简介
 	private String path;				//访问路径
 	private ContentTypeEnum type;		//内容类型
+	private Integer sort;				//排序字段
 	private String imgPath;				//封面图片
 	
 	private Site site;					//所属站点
@@ -96,6 +101,15 @@ public class Catalog extends IdEntity{
 	public void setType(ContentTypeEnum type) {
 		this.type = type;
 	}
+	
+	@Column(name = "catalog_sort")
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
 
 	@Column(name = "img_path")
 	public String getImgPath() {
@@ -127,6 +141,8 @@ public class Catalog extends IdEntity{
 	}
 
 	@OneToMany(targetEntity = Catalog.class, cascade = { CascadeType.ALL }, mappedBy = "parent")
+	@Fetch(value = FetchMode.SUBSELECT)
+	@OrderBy("sort desc")
 	public List<Catalog> getChildren() {
 		return children;
 	}
