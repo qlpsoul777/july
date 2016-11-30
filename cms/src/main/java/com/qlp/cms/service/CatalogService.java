@@ -26,7 +26,7 @@ public class CatalogService {
 
 	public String queryCatalogTree(Site site) {
 		List<Catalog> oneLevels = catalogDao.findCatalogTree(site.getId());
-		Catalog root = new Catalog(site.getName());
+		Catalog root = new Catalog(0L,site.getName());
 		root.setChildren(oneLevels);
 		return JSON.toJSONString(root);
 	}

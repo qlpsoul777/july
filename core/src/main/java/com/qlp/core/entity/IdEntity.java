@@ -69,6 +69,14 @@ public class IdEntity extends BaseEntity{
 		this.updateBy = updateBy;
 	}
 	
+	public IdEntity() {
+		super();
+	}
+	
+	public IdEntity(Long id) {
+		super();
+		this.id = id;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

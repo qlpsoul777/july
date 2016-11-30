@@ -155,8 +155,8 @@ public class Catalog extends IdEntity{
 		super();
 	}
 
-	public Catalog(String name) {
-		super();
+	public Catalog(Long id,String name) {
+		super(id);
 		this.name = name;
 	}
 

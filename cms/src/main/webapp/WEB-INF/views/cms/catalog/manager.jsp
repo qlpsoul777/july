@@ -12,14 +12,21 @@
 	    <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
 	    <link href="${ctx}/static/js/ztree3/zTreeStyle/zTreeStyle.css" rel="stylesheet">
   		<style type="text/css">
-  		div#rMenu {position:absolute; visibility:hidden; top:0; background-color: #555;text-align: left;padding: 2px;}
-		
+  			div#rMenu {
+  				position:absolute;
+  			 	display:none;
+  			  	background-color: #555;
+  			  	text-align: left;
+  			 	padding: 2px;
+  			  	border: 2px solid #ccc;
+  			  	cursor:pointer;
+  			  }
   		</style>
   	</head>
 	<body>
 		<div class="container">
 	  		<div class="row">
-	  			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	  			<nav class="navbar navbar-default navbar-fixed-top">
 				  <div class="container">
 				    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
 			          <ul class="nav navbar-nav">
@@ -37,7 +44,7 @@
 	  		<div class="row" style="padding-top: 60px;">
 	  			<div class="col-md-4">
 	  				<ul id="catalogTree" class="ztree"></ul>
-	  				<div id="rMenu" style="top: 381px; left: 104px; visibility: hidden;">
+	  				<div id="rMenu">
 						<ul class="dropdown-menu">
 							<li id="addChild">增加下级栏目</li>
 							<li id="addSibling">增加同级栏目</li>
@@ -46,8 +53,7 @@
 					</div>
 	  			</div>
 	  			<div class="col-md-8">
-	  			hello
-	  				<!-- <iframe id="iframeId" frameborder="0"  name="main"  scrolling="yes"></iframe> -->
+	  				<iframe id="iframeId" frameborder="0"  name="main" width="100%" height="100%"  scrolling="yes"></iframe>
 	  			</div>
 	  		</div>
 			
@@ -58,6 +64,12 @@
 		<script type="text/javascript">
 		$(function () {
 			loadTree();
+			
+			$("body").bind("mousedown",function(event){
+				if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
+					rMenu.hide();
+				}
+			});
 	    	
 	    });
 	
@@ -67,6 +79,11 @@
 				view : {
 					dblClickExpand : false,
 					selectedMulti : false
+				},
+				simpleData: {
+					enable: false,
+					idKey: "id",
+					rootPId: null
 				},
 				callback:{
 					onRightClick: zTreeOnRightClick
@@ -87,17 +104,23 @@
 		}
 		
 		function zTreeOnRightClick(event, treeId, treeNode){
-			if(!treeNode){
-				zTree.cancelSelectedNode();
-				showRMenu("root", event.clientX, event.clientY);
-			}else{
-				zTree.selectNode(treeNode);
-				showRMenu("node", event.clientX, event.clientY);
+			if(treeNode){
+				if(treeNode.id == 0){
+					showRMenu("root", event.clientX-100, event.clientY-60);
+				}else{
+					showRMenu("node", event.clientX-100, event.clientY-60);
+				}
+				
+				$('#addChild').on('click',function(){
+					$('#iframeId').attr('src','${ctx}/catalog/addChild?pId='+treeNode.id);
+					hideRMenu();
+				});
 			}
 		}
 		
 		function showRMenu(type, x, y) {
-			$("#rMenu ul").show();
+			rMenu.show();
+			$(rMenu).find('ul').show();
 			if (type=="root") {
 				$("#addChild").show();
 				$("#addSibling").hide();
@@ -107,19 +130,13 @@
 				$("#addSibling").show();
 				$("#deletes").show();
 			}
-			rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
-			$("body").bind("mousedown", onBodyMouseDown);
+			rMenu.css({"top":y+"px", "left":x+"px"});
 		}
 		
 		function hideRMenu() {
-			if (rMenu) rMenu.css({"visibility": "hidden"});
-			$("body").unbind("mousedown", onBodyMouseDown);
+			rMenu.hide();
 		}
-		function onBodyMouseDown(event){
-			if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
-				rMenu.css({"visibility" : "hidden"});
-			}
-		}
+		
 		</script>
 	</body>
 </html>
