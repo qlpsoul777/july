@@ -1,17 +1,21 @@
 package com.qlp.cms.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.qlp.cms.entity.Catalog;
 import com.qlp.cms.entity.Site;
 import com.qlp.cms.service.CatalogService;
 import com.qlp.constant.CmsConstant;
 import com.qlp.core.Exception.ErrorDetail.SysErrorEnum;
+import com.qlp.core.enums.ContentTypeEnum;
+import com.qlp.core.enums.StatusEnum;
 import com.qlp.core.utils.AssertUtil;
 
 @Controller
@@ -21,19 +25,90 @@ public class CatalogController {
 	@Autowired
 	private CatalogService catalogService;
 	
+	/**
+	 * 栏目管理
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/manager")
+	public String manager(HttpServletRequest request){
+		request.setAttribute("statuss", StatusEnum.values());
+		request.setAttribute("types", ContentTypeEnum.values());
+		return "/cms/catalog/manager";
+	}
+	
+	/**
+	 * 栏目管理栏目树
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/tree")
 	@ResponseBody
 	public String tree(HttpServletRequest request){
 		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
 		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
 		String treeJson = catalogService.queryCatalogTree(site);
-		System.out.println(treeJson);
 		return treeJson;
 	}
 	
-	@RequestMapping("/addChild")
-	public String addChild(HttpServletRequest request){
+	/**
+	 * 删除栏目
+	 * @param request
+	 * @param response
+	 * @param id
+	 */
+	@RequestMapping("/delete")
+	@ResponseBody
+	public boolean delete(HttpServletRequest request,Long id){
+		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
+		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
+		boolean isSuccess = catalogService.delete(id);
+		return isSuccess;
+	}
+	
+	
+	
+	
+	
+	@RequestMapping("/edit")
+	public String edit(HttpServletRequest request,Long pId,int coType){
+		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
+		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
+		
+		Catalog parent = catalogService.getParent(pId,site);
+		if(coType == 0){
+			Catalog catalog = catalogService.get(pId);
+			request.setAttribute("catalog", catalog);
+			parent = catalog.getParent();
+		}
+		
+		request.setAttribute("parent", parent);
+		request.setAttribute("siteName", site.getName());
+		request.setAttribute("statuss", StatusEnum.values());
+		request.setAttribute("types", ContentTypeEnum.values());
 		return "/cms/catalog/edit";
 	}
+	
+	@RequestMapping("/save")
+	public void save(HttpServletRequest request,HttpServletResponse response,@ModelAttribute Catalog catalog,Long pId) throws Exception{
+		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
+		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
+		catalog.setSite(site);
+		
+		Catalog parent = null;
+		if(pId != null){
+			parent = catalogService.get(pId);
+			catalog.setParent(parent);
+		}
+		String path = catalogService.getPath(site,parent,catalog.getAlias());
+		catalog.setPath(path);
+		catalogService.save(catalog);
+		response.getWriter().write(
+				"<script type='text/javascript'>window.parent.reloadPage("+site.getId() +");</script>");
+	}
+	
+	
+	
+	
 
 }

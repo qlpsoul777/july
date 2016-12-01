@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.qlp.cms.entity.Site;
 import com.qlp.cms.service.SiteService;
 import com.qlp.constant.CmsConstant;
-import com.qlp.core.Exception.ErrorDetail;
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.enums.StatusEnum;
 import com.qlp.core.utils.AssertUtil;
@@ -70,7 +69,7 @@ public class SiteController {
 		Site site = siteService.query(id);
 		AssertUtil.assertNotNull(site, BusiErrorEnum.OUTPUT_NOT_FOUND, "未查询到站点信息");
 		request.getSession().setAttribute(CmsConstant.SITE_KEY, site);
-		return "/cms/catalog/manager";
+		return "/cms/site/manager";
 	}
 
 }

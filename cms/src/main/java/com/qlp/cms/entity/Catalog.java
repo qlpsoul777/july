@@ -35,7 +35,7 @@ public class Catalog extends IdEntity{
 	private String name;				//栏目名
 	private String alias;				//栏目别名
 	private StatusEnum status;			//栏目状态
-	private String introduction;		//栏目简介
+	private String introduction;		//栏目描述
 	private String path;				//访问路径
 	private ContentTypeEnum type;		//内容类型
 	private Integer sort;				//排序字段
@@ -155,9 +155,10 @@ public class Catalog extends IdEntity{
 		super();
 	}
 
-	public Catalog(Long id,String name) {
+	public Catalog(Long id,String name,String alias) {
 		super(id);
 		this.name = name;
+		this.alias =alias;
 	}
 
 }
