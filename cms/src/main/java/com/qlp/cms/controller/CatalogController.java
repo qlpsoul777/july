@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.qlp.cms.entity.Catalog;
 import com.qlp.cms.entity.Site;
 import com.qlp.cms.service.CatalogService;
@@ -59,38 +60,29 @@ public class CatalogController {
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	public boolean delete(HttpServletRequest request,Long id){
+	public String delete(HttpServletRequest request,Long id){
 		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
 		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
-		boolean isSuccess = catalogService.delete(id);
+		String isSuccess = catalogService.delete(id);
 		return isSuccess;
 	}
 	
-	
-	
-	
-	
-	@RequestMapping("/edit")
-	public String edit(HttpServletRequest request,Long pId,int coType){
-		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
-		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
-		
-		Catalog parent = catalogService.getParent(pId,site);
-		if(coType == 0){
-			Catalog catalog = catalogService.get(pId);
-			request.setAttribute("catalog", catalog);
-			parent = catalog.getParent();
-		}
-		
-		request.setAttribute("parent", parent);
-		request.setAttribute("siteName", site.getName());
-		request.setAttribute("statuss", StatusEnum.values());
-		request.setAttribute("types", ContentTypeEnum.values());
-		return "/cms/catalog/edit";
+	/**
+	 * 
+	 * @param request
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/info")
+	@ResponseBody
+	public String info(HttpServletRequest request,Long id){
+		Catalog catalog = catalogService.get(id);
+		return JSON.toJSONString(catalog);
 	}
 	
 	@RequestMapping("/save")
-	public void save(HttpServletRequest request,HttpServletResponse response,@ModelAttribute Catalog catalog,Long pId) throws Exception{
+	@ResponseBody
+	public String save(HttpServletRequest request,HttpServletResponse response,@ModelAttribute Catalog catalog,Long pId) throws Exception{
 		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
 		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
 		catalog.setSite(site);
@@ -103,8 +95,7 @@ public class CatalogController {
 		String path = catalogService.getPath(site,parent,catalog.getAlias());
 		catalog.setPath(path);
 		catalogService.save(catalog);
-		response.getWriter().write(
-				"<script type='text/javascript'>window.parent.reloadPage("+site.getId() +");</script>");
+		return "1";
 	}
 	
 	

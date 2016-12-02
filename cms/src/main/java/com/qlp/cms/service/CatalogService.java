@@ -30,24 +30,16 @@ public class CatalogService {
 		return JSON.toJSONString(root);
 	}
 
-	public Catalog getParent(Long pId,Site site) {
-		Catalog catalog = catalogDao.findOne(pId);
-		if(null == catalog){
-			catalog = new Catalog(0L,site.getName(),CmsConstant.OVER_CHAR + site.getNum());
-		}
-		return catalog;
-	}
-	
 	@Transactional(readOnly = false)
 	public Catalog save(Catalog catalog){
 		return catalogDao.saveAndFlush(catalog);
 	}
 	
 	@Transactional(readOnly = false)
-	public boolean delete(Long id){
+	public String delete(Long id){
 		catalogDao.delete(id);
 		catalogDao.flush();
-		return true;
+		return "1";
 	}
 
 	public Catalog get(Long pId) {

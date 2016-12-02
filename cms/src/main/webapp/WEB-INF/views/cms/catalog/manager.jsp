@@ -59,13 +59,13 @@ div#rMenu {
 					<div class="form-group">
 						<label for="status" class="col-sm-2 control-label">栏目状态</label>
 						<div class="col-sm-10">
+								<div class="radio" id="status">
 							<c:forEach items="${statuss}" var="s">
-								<div class="radio">
 									<label> 
 										<input type="radio" value="${s}" name="status" />${s.desc}
 									</label>
-								</div>
 							</c:forEach>
+								</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -130,10 +130,17 @@ div#rMenu {
 					rMenu.hide();
 				}
 			});
+			
+			$("#editForm").submit(function(){
+				if(!checkData()){
+				  return false;
+				}
+				submitForm();
+			});
 	    	
 	    });
 	
-		var zTree,rMenu;
+		var zTree,rMenu,root;
 		function loadTree(){
 			var setting = {
 				view : {
@@ -159,7 +166,26 @@ div#rMenu {
 					if(data){
 						zTree = $.fn.zTree.init($("#catalogTree"), setting, data);
 						zTree.expandAll(true);//全部展开 
+						root = zTree.getNodeByParam("id", 0, null);
+						$('#siteName').val(root.name);
 						rMenu = $("#rMenu");
+					}
+				}
+			});
+		}
+		
+		function submitForm(){
+			$.ajax({
+				url : "${ctx}/catalog/save",
+				type : "POST",
+				async : true,
+				data  :$('#editForm').serializeArray(),
+				dataType : "json",
+				success : function(data){
+					if(data == '1'){
+						alert('保存成功');
+					}else{
+						alert('保存失败');
 					}
 				}
 			});
@@ -167,8 +193,7 @@ div#rMenu {
 		
 		function zTreeOnRightClick(event, treeId, treeNode){
 			if(treeNode){
-				var root = zTree.getNodeByParam("id", 0, null);
-				$('#siteName').val(root.name);
+				
 				if(treeNode.id == 0){
 					showRMenu("root", event.clientX, event.clientY);
 				}else{
@@ -207,7 +232,7 @@ div#rMenu {
 		
 		function deleteTreeNode(node){
 			$.get("${ctx}/catalog/delete?id=" + node.id,function(data){
-		    	if(data){
+		    	if(data == '1'){
 		    		zTree.removeNode(node);
 		    	}else{
 		    		alert("删除失败");
@@ -218,8 +243,27 @@ div#rMenu {
 		function zTreeOnClick(event, treeId, treeNode){
 			if(treeNode){
 				if(treeNode.id != 0){
-					$.get("${ctx}/catalog/info?id=" + treeNode.id,function(data){
+					$.get("${ctx}/catalog/info?id=" + treeNode.id+"&time="+new Date().getTime(),function(data){
 				    	if(data){
+				    		var catalog = JSON.parse(data);
+				    		$('#id').val(catalog.id);
+				    		var parent = catalog.parent;
+				    		if(parent){
+				    			$('#pId').val(parent.id);
+				    			$('#pName').val(parent.name);
+				    		}else{
+				    			$('#pId').val("");
+				    			$('#pName').val(root.name);
+				    		}
+				    		$('#name').val(catalog.name);
+				    		$('#alias').val(catalog.alias);
+				    		$('#introduction').val(catalog.introduction);
+				    		$('#path').val(catalog.path);
+				    		$('#sort').val(catalog.sort);
+				    		var status = catalog.status;
+				    		$('input[type="radio"][value="'+status+'"]').prop("checked",true);
+				    		var type = catalog.type;
+				    		$('#type option[value="'+type+'"]').prop('selected',true);
 				    		
 				    	}
 				    });

@@ -130,7 +130,7 @@ public class Catalog extends IdEntity{
 		this.site = site;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "pid")
 	public Catalog getParent() {
 		return parent;
