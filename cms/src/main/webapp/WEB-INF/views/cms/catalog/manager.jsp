@@ -142,6 +142,7 @@ div#rMenu {
 	
 		var zTree,rMenu,root;
 		function loadTree(){
+			$('input[type="radio"][name="status"]').eq(1).prop("checked",true);
 			var setting = {
 				view : {
 					dblClickExpand : false,
@@ -182,8 +183,9 @@ div#rMenu {
 				data  :$('#editForm').serializeArray(),
 				dataType : "json",
 				success : function(data){
-					if(data == '1'){
+					if(data == 'success'){
 						alert('保存成功');
+						loadTree();
 					}else{
 						alert('保存失败');
 					}
@@ -205,6 +207,7 @@ div#rMenu {
 					var pName = treeNode.name;
 					$('#pId').val(pId);
 					$('#pName').val(pName);
+					removeVal();
 					hideRMenu();
 				});
 				
@@ -214,6 +217,7 @@ div#rMenu {
 					var pName = node.name;
 					$('#pId').val(pId);
 					$('#pName').val(pName);
+					removeVal();
 					hideRMenu();
 				});
 				
@@ -232,7 +236,7 @@ div#rMenu {
 		
 		function deleteTreeNode(node){
 			$.get("${ctx}/catalog/delete?id=" + node.id,function(data){
-		    	if(data == '1'){
+		    	if(data == 'success'){
 		    		zTree.removeNode(node);
 		    	}else{
 		    		alert("删除失败");
@@ -289,8 +293,16 @@ div#rMenu {
 		function hideRMenu() {
 			rMenu.hide();
 		}
-		function reloadPage(id){
-			window.location.href = "${ctx}/site/manager?id="+id;
+		
+		function removeVal(){
+			$('#id').val('');
+			$('#name').val('');
+    		$('#alias').val('');
+    		$('#introduction').val('');
+    		$('#path').val('');
+    		$('#sort').val('');
+    		$('input[type="radio"][name="status"]').eq(1).prop("checked",true);
+    		$('#type option').eq(0).prop('selected',true);
 		}
 		</script>
 </body>

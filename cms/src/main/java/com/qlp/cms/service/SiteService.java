@@ -13,10 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.qlp.cms.dao.SiteDao;
 import com.qlp.cms.entity.Site;
-import com.qlp.core.utils.DataConvertUtil;
 import com.qlp.core.utils.LogUtil;
 import com.qlp.core.utils.StringUtil;
 
+/**
+ * 站点管理服务层
+ * @author qlp
+ *
+ */
 @Service("siteService")
 @Transactional(readOnly = true)
 public class SiteService {
@@ -31,12 +35,9 @@ public class SiteService {
 	 * @param id 主键
 	 * @return 未查询到返回null
 	 */
-	public Site query(String id){
-		LogUtil.info(logger, "接收到的参数id:{0}", id);
-		Site site = null;
-		if(StringUtil.isNotBlank(id)){
-			site = siteDao.findOne(DataConvertUtil.toLong(id));
-		}
+	public Site query(Long id){
+		LogUtil.info(logger, "接收到Site的参数id:{0}", id);
+		Site site = siteDao.findOne(id);
 		LogUtil.info(logger, "通过参数id:{0}-查询到的结果site:{1}", id,site);
 		return site;
 	}
@@ -48,7 +49,7 @@ public class SiteService {
 	 */
 	@Transactional(readOnly = false)
 	public Site save(Site site){
-		LogUtil.info(logger, "待持久化对象参数site:{0}", site);
+		LogUtil.info(logger, "待持久化参数site:{0}", site);
 		return siteDao.saveAndFlush(site);
 	}
 	

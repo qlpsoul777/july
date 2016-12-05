@@ -37,7 +37,7 @@ public class StringUtil extends StringUtils{
 		Long[] result = new Long[st.countTokens()];
 		int count = 0;
 		while(st.hasMoreElements()){
-			result[count++] = Long.parseLong((String) st.nextElement());
+			result[count++] = DataConvertUtil.toLong(st.nextElement());
 		}
 		return result;
 	}

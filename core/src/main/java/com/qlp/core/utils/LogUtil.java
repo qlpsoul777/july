@@ -15,6 +15,10 @@ public final class LogUtil {
 		logger.info(format(msg,params));
 	}
 	
+	public static void warn(Logger logger, String msg, Object... params) {
+		logger.warn(format(msg,params));
+	}
+	
 	public static void error(Logger logger, String msg, Object... params) {
 		logger.error(format(msg,params));
 	}

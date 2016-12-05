@@ -18,6 +18,7 @@ import com.qlp.core.Exception.ErrorDetail.SysErrorEnum;
 import com.qlp.core.enums.ContentTypeEnum;
 import com.qlp.core.enums.StatusEnum;
 import com.qlp.core.utils.AssertUtil;
+import com.qlp.core.utils.ConstantsUtil;
 
 @Controller
 @RequestMapping("/catalog")
@@ -61,8 +62,6 @@ public class CatalogController {
 	@RequestMapping("/delete")
 	@ResponseBody
 	public String delete(HttpServletRequest request,Long id){
-		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
-		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
 		String isSuccess = catalogService.delete(id);
 		return isSuccess;
 	}
@@ -95,11 +94,7 @@ public class CatalogController {
 		String path = catalogService.getPath(site,parent,catalog.getAlias());
 		catalog.setPath(path);
 		catalogService.save(catalog);
-		return "1";
+		return ConstantsUtil.SUCCESS;
 	}
-	
-	
-	
-	
 
 }

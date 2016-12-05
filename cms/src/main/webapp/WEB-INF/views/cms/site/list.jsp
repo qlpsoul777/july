@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    	<title>站点管理</title>
+    	<title>站点列表</title>
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
@@ -14,10 +14,7 @@
 	<body>
 		<div class="container">
 	  		<div class="row">
-	  			
-					<h3>
-						站点列表
-					</h3>
+	  			<h3>站点列表</h3>
 					<div class="col-xs-12 col-md-12">
 						<a href="${ctx }/site/edit" class="btn btn-primary">新增</a>
 						<a id="batchDel" class="btn btn-danger">删除</a>
@@ -80,7 +77,6 @@
 					   <div>
 					   		<nav><ul class="pagination" id="pageDiv"></ul></nav>
 					   </div>
-					
 				</div>
 			</div>
   		</div>

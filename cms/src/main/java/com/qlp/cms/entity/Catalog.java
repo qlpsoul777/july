@@ -33,15 +33,23 @@ import com.qlp.core.enums.StatusEnum;
 public class Catalog extends IdEntity{
 	
 	private String name;				//栏目名
+	
 	private String alias;				//栏目别名
+	
 	private StatusEnum status;			//栏目状态
+	
 	private String introduction;		//栏目描述
+	
 	private String path;				//访问路径
+	
 	private ContentTypeEnum type;		//内容类型
+	
 	private Integer sort;				//排序字段
+	
 	private String imgPath;				//封面图片
 	
 	private Site site;					//所属站点
+	
 	private Catalog parent;				//父级栏目
 	
 	private List<Catalog> children;		//子栏目

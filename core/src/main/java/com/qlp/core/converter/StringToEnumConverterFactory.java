@@ -17,7 +17,6 @@ public final class StringToEnumConverterFactory implements ConverterFactory<Stri
         public StringToEnumConverter(Class<T> enumType) {
             this.enumType = enumType;
         }
-
         
 		public T convert(String source) {
             return (T) Enum.valueOf(this.enumType, source.trim());

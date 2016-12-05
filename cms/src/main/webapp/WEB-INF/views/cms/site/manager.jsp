@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    	<title>栏目管理</title>
+    	<title>站点管理</title>
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
@@ -26,18 +26,18 @@
 				  <div class="container">
 				    <div class="collapse navbar-collapse" >
 			          <ul class="nav navbar-nav" id="menuContainer">
-			            <li class="active"><a href="${ctx }/catalog/manager">栏目管理</a></li>
-			            <li><a href="${ctx }/template/manager">模板管理</a></li>
-			            <li><a href="${ctx }/content/manager">新闻管理</a></li>
-			            <li><a href="#">活动管理</a></li>
-			            <li><a href="#">文件管理</a></li>
-			            <li><a href="#">广告管理</a></li>
+			            <li class="active"><a href="${ctx }/catalog/manager" target="mainIframe">栏目管理</a></li>
+			            <li><a href="${ctx }/template/manager" target="mainIframe">模板管理</a></li>
+			            <li><a href="${ctx }/content/manager" target="mainIframe">新闻管理</a></li>
+			            <li><a href="#" target="mainIframe">活动管理</a></li>
+			            <li><a href="#" target="mainIframe">文件管理</a></li>
+			            <li><a href="#" target="mainIframe">广告管理</a></li>
 			          </ul>
 			        </div>
 				  </div>
 				</nav>
 	  		</div>
-	  		<div class="row" style="padding-top: 60px;">
+	  		<div class="row" style="padding-top: 60px;overflow: hidden;">
 	  			<iframe id="mainIframe" name="mainIframe"></iframe>
 	  		</div>	
   		</div>
@@ -51,13 +51,13 @@
 			obj.on('click',function(){
 				$(this).parent().addClass('active').siblings().removeClass('active');
 			});
-			
-	    	
 	    });
 	
 		function init(target){
 			var y = window.screen.availHeight - 200;
 			var x =  window.screen.availWidth  - 200;
+			if(y <= 200){y = 200;}
+			if(x <= 200){x = 200;}
 			$('#mainIframe').css({"height":y+"px", "width":x+"px"});
 			$('#mainIframe').attr('src',target.eq(0).attr('href'));
 		}

@@ -22,9 +22,22 @@ public final class DataConvertUtil {
 		try {
 			defaultVal = Long.parseLong(toStr(obj));
 		} catch (Exception e) {
-			LogUtil.error(logger, "{0}转Long出错：{1}",obj,e.getMessage());
+			LogUtil.warn(logger, "{0}转Long出错：{1}",obj,e.getMessage());
 		}
 		return defaultVal;
 	}
-
+	
+	public static Integer toInt(Object obj){
+		return toInt(obj,0);
+	}
+	
+	public static Integer toInt(Object obj,Integer defaultVal){
+		try {
+			defaultVal = Integer.parseInt(toStr(obj));
+		} catch (Exception e) {
+			LogUtil.warn(logger, "{0}转Integer出错：{1}",obj,e.getMessage());
+		}
+		return defaultVal;
+	}
+	
 }
