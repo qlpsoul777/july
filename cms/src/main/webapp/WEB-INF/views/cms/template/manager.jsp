@@ -12,14 +12,18 @@
 	    <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
 	    <link href="${ctx}/static/js/ztree3/zTreeStyle/zTreeStyle.css" rel="stylesheet">
   		<style type="text/css">
-  			#templateIframe{
-		  		border-style: none;
-		  		overflow: scroll;
+			#templateIframe{
+				border-style: none;
+				overflow: scroll;
 				overflow-x: hidden;
-		  }
+				width:90%;
+			}
+			#tempCons{
+				overflow: hidden;
+			}
   		</style>
   	</head>
-	<body>
+	<body id="tempCons">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3">
@@ -81,10 +85,8 @@
 			
 			function init(){
 				var y = window.screen.availHeight - 200;
-				var x =  window.screen.availWidth  - 200;
 				if(y <= 200){y = 200;}
-				if(x <= 200){x = 200;}
-				$('#templateIframe').css({"height":y+"px", "width":x+"px"});
+				$('#templateIframe').css({"height":y+"px"});
 			}
 		</script>
 	</body>

@@ -85,4 +85,15 @@ public class SiteService {
 		return siteDao.findAll(example, pageable);
 	}
 
+	public Site newIfNotFound(Long id) {
+		Site site = null;
+		if(id != null){
+			site = query(id);
+		}
+		if(site == null){
+			site = new Site();
+		}
+		return site;
+	}
+
 }

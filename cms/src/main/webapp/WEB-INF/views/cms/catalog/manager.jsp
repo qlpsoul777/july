@@ -40,8 +40,7 @@ div#rMenu {
 			</div>
 			<div class="col-md-9">
 				<h3>栏目编辑</h3>
-				<form id="editForm" class="form-horizontal"
-					action="${ctx}/catalog/save" method="post">
+				<form id="editForm" class="form-horizontal">
 					<input type="hidden" id="id" name="id" />
 					<input type="hidden" id="pId" name="pId" />
 					<div class="form-group">
@@ -59,13 +58,13 @@ div#rMenu {
 					<div class="form-group">
 						<label for="status" class="col-sm-2 control-label">栏目状态</label>
 						<div class="col-sm-10">
-								<div class="radio" id="status">
-							<c:forEach items="${statuss}" var="s">
+							<div class="radio" id="status">
+								<c:forEach items="${statuss}" var="s">
 									<label> 
 										<input type="radio" value="${s}" name="status" />${s.desc}
 									</label>
-							</c:forEach>
-								</div>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -110,7 +109,7 @@ div#rMenu {
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">保存</button>
+							<button id="submitForm" class="btn btn-default">保存</button>
 						</div>
 					</div>
 				</form>
@@ -131,14 +130,34 @@ div#rMenu {
 				}
 			});
 			
-			$("#editForm").submit(function(){
+			$("#submitForm").on('click',function(){
 				if(!checkData()){
 				  return false;
 				}
-				submitForm();
+				$.ajax({
+					url      : "${ctx}/catalog/save",
+					type     : "POST",
+					async    : false,
+					data     :$('#editForm').serializeArray(),
+					dataType : "json",
+					success  : function(data){
+						console.log(data);
+						console.log(typeof data);
+						if(data == 'success'){
+							alert('保存成功');
+							loadTree();
+						}else{
+							alert('保存失败');
+						}
+					}
+				});
 			});
 	    	
 	    });
+		
+		function checkData(){
+			return true;
+		}
 	
 		var zTree,rMenu,root;
 		function loadTree(){
@@ -175,24 +194,6 @@ div#rMenu {
 			});
 		}
 		
-		function submitForm(){
-			$.ajax({
-				url : "${ctx}/catalog/save",
-				type : "POST",
-				async : true,
-				data  :$('#editForm').serializeArray(),
-				dataType : "json",
-				success : function(data){
-					if(data == 'success'){
-						alert('保存成功');
-						loadTree();
-					}else{
-						alert('保存失败');
-					}
-				}
-			});
-		}
-		
 		function zTreeOnRightClick(event, treeId, treeNode){
 			if(treeNode){
 				
@@ -201,6 +202,8 @@ div#rMenu {
 				}else{
 					showRMenu("node", event.clientX, event.clientY);
 				}
+				
+				$('#addChild').off('click');
 				$('#addChild').on('click',function(){
 					console.log(treeNode);
 					var pId = treeNode.id;
@@ -211,6 +214,7 @@ div#rMenu {
 					hideRMenu();
 				});
 				
+				$('#addSibling').off('click');
 				$('#addSibling').on('click',function(){
 					var node = treeNode.getParentNode();
 					var pId = node.id;
@@ -221,6 +225,7 @@ div#rMenu {
 					hideRMenu();
 				});
 				
+				$('#deletes').off('click');
 				$('#deletes').on('click',function(){
 					if(treeNode.isParent){
 						alert("该栏目下有子栏目，不允许删除。");
@@ -228,8 +233,8 @@ div#rMenu {
 						if(confirm("确定删除当前栏目吗?")){
 							deleteTreeNode(treeNode);
 						}
-						hideRMenu();
 					}
+					hideRMenu();
 				});
 			}
 		}
@@ -238,6 +243,7 @@ div#rMenu {
 			$.get("${ctx}/catalog/delete?id=" + node.id,function(data){
 		    	if(data == 'success'){
 		    		zTree.removeNode(node);
+		    		removeVal();
 		    	}else{
 		    		alert("删除失败");
 		    	}

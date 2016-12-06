@@ -29,15 +29,15 @@
 			            <li class="active"><a href="${ctx }/catalog/manager" target="mainIframe">栏目管理</a></li>
 			            <li><a href="${ctx }/template/manager" target="mainIframe">模板管理</a></li>
 			            <li><a href="${ctx }/content/manager" target="mainIframe">新闻管理</a></li>
+			            <li><a href="${ctx }/staticFile/list" target="mainIframe">文件管理</a></li>
 			            <li><a href="#" target="mainIframe">活动管理</a></li>
-			            <li><a href="#" target="mainIframe">文件管理</a></li>
 			            <li><a href="#" target="mainIframe">广告管理</a></li>
 			          </ul>
 			        </div>
 				  </div>
 				</nav>
 	  		</div>
-	  		<div class="row" style="padding-top: 60px;overflow: hidden;">
+	  		<div class="row" style="padding-top: 60px;">
 	  			<iframe id="mainIframe" name="mainIframe"></iframe>
 	  		</div>	
   		</div>

@@ -55,7 +55,7 @@ public class SiteController {
 	 */
 	@RequestMapping("/edit")
 	public String edit(HttpServletRequest request,Long id){
-		Site site = siteService.query(id);
+		Site site = siteService.newIfNotFound(id);
 		request.setAttribute("site", site);
 		request.setAttribute("statuss", StatusEnum.values());
 		return "/cms/site/edit";

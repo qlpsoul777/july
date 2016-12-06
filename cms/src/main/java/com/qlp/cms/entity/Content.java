@@ -13,16 +13,16 @@ public class Content extends IdEntity{
 	
 	
 	private Date publishTime;				//
-	private Integer isRefer;
-	private String referName;
-	private String sourceFrom;
-	private String imgPath;
-	private String keyWords;
-	private String path;
-	private String contentText;
-	private String introduction;
-	private Integer sort;
-	private Catalog catalog;			
-	private Site site;				
+	private Integer isRefer;				//
+	private String referName;				//
+	private String sourceFrom;				//
+	private String imgPath;					//
+	private String keyWords;				//
+	private String path;					//
+	private String contentText;				//
+	private String introduction;			//
+	private Integer sort;					//
+	private Catalog catalog;				//			
+	private Site site;						//				
 
 }

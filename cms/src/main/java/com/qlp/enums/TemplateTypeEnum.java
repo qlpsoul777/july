@@ -8,9 +8,13 @@ package com.qlp.enums;
 public enum TemplateTypeEnum {
 	
 	INDEX(0,"首页模板"),
+	
 	LIST(1,"列表模板"),
+	
 	CONTENT(2,"信息详情模板"),
+	
 	OTHER(3,"其他模板")
+	
 	;
 	
 	private final int code;
