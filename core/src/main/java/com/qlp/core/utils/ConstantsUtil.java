@@ -1,5 +1,10 @@
 package com.qlp.core.utils;
 
+/**
+ * 公共常量工具类
+ * @author qlp
+ *
+ */
 public final class ConstantsUtil {
 	
 	/**成功标识*/

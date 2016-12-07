@@ -5,6 +5,11 @@ import org.slf4j.LoggerFactory;
 
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 
+/**
+ * 数据类型转换工具类
+ * @author qlp
+ *
+ */
 public final class DataConvertUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DataConvertUtil.class);
@@ -22,7 +27,7 @@ public final class DataConvertUtil {
 		try {
 			defaultVal = Long.parseLong(toStr(obj));
 		} catch (Exception e) {
-			LogUtil.warn(logger, "{0}转Long出错：{1}",obj,e.getMessage());
+			LogUtil.info(logger, "{0}转Long出错：{1}",obj,e.getMessage());
 		}
 		return defaultVal;
 	}

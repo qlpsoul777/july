@@ -6,6 +6,11 @@ import com.qlp.core.Exception.ErrorDetail;
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.Exception.MyException;
 
+/**
+ * 断言工具类
+ * @author qlp
+ *
+ */
 public final class AssertUtil {
 	
 	/**

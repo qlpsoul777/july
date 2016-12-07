@@ -74,6 +74,11 @@
         <param-name>spring.profiles.default</param-name>
         <param-value>development</param-value>
     </context-param>
+    <!-- 设定数据存放根目录 -->
+    <context-param>
+        <param-name>dataPath</param-name>
+        <param-value>/home/data/cms/</param-value>
+    </context-param>
 
     <!--防止发生java.beans.Introspector内存泄露,应将它配置在ContextLoaderListener的前面-->
     <listener>
@@ -83,6 +88,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <!-- 全局缓存初始化入口 -->
+    <listener>
+    	<listener-class>com.qlp.listener.StartupInitializer</listener-class>
+  	</listener>
 
    <!-- Spring MVC Servlet -->
     <servlet>
