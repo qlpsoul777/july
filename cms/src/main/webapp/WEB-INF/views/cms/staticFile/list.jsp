@@ -18,8 +18,7 @@
 					<div class="col-xs-12 col-md-12">
 						<a href="${ctx }/template/edit" class="btn btn-primary">上传</a>
 						<a href="${ctx }/template/edit" class="btn btn-primary">下载</a>
-						<a href="${ctx }/template/edit" class="btn btn-primary">返回上一层</a>
-						<a href="${ctx }/template/edit" class="btn btn-primary">返回根目录</a>
+						<a href="${ctx }/staticFile/list" class="btn btn-primary">返回根目录</a>
 						<form id="queryForm" class="form-horizontal" action="${ctx }/staticFile/list">
 							<input id="totalSize" type="hidden" name="totalSize" value="${pageInfo.totalPages }"/>
 		  					<input id="pageSize" type="hidden" name="pageSize" value="${pageInfo.size }"/>
@@ -29,9 +28,7 @@
 					</div>
 					<div class="col-xs-12 col-md-12">
 						<ol class="breadcrumb">
-						  <li><a href="#">Home</a></li>
-						  <li><a href="#">Library</a></li>
-						  <li class="active">Data</li>
+						  <li><a href="#">${filePath}</a></li>
 						</ol>
 					</div>
 					<div class="smart-widget-body">
@@ -60,11 +57,16 @@
 						        				</c:choose>
 						        			</td>
 						        			<td>${file.path }</td>
-						        			<td>${file.size }</td>
+						        			<td>
+						        				<c:choose>
+						        					<c:when test="${file.isFile}">${file.size }</c:when>
+						        					<c:otherwise>未知</c:otherwise>
+						        				</c:choose>
+						        			</td>
 						        			<td>${file.modifyTime }</td>
 						        			<td>
 						        				<c:if test="${file.isFile}">
-						        					<a href="${ctx }/staticFile/preView?path=${file.path}">查看</a>
+						        					<a href="${ctx }/staticFile/preView?path=${file.path}" target="_blank">查看</a>
 						        				</c:if>
 						        				<a href="${ctx }/staticFile/delete?path=${file.path}">删除</a>
 						        			</td>

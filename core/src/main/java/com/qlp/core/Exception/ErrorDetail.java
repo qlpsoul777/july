@@ -62,6 +62,7 @@ public interface ErrorDetail {
 	 */
 	public enum BusiErrorEnum implements ErrorDetail{
 		INPUT_NOT_EXIST("NULL","输入参数不能为空"),
+		INPUT_STATE_ILLEGAL("ILLEGAL","输入参数状态不合法"), 
 		OUTPUT_NOT_FOUND("NOT_FOUND","输出不能为空");
 		
 		private final String code;
