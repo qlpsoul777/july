@@ -14,7 +14,7 @@ public class FileUtil {
 	public static boolean isNormalText(File file){
 		
 		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
-		AssertUtil.assertTrue(file.exists() && file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不存在/文件不能是文件夹");
+
 		
 		for(String name : texts){
 			if(StringUtil.equalsIgnoreCase(name,getAfterName(file.getName()) ));{

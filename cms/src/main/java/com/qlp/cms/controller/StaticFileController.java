@@ -1,11 +1,6 @@
 package com.qlp.cms.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,23 +50,28 @@ public class StaticFileController {
 		if(file.exists() && file.isFile()){
 			if(FileUtil.isNormalText(file)){
 				response.setContentType("text/plain;charset=utf-8");
-				InputStream is = null;
+				InputStreamReader  isr = null;
 				StringBuilder sb = new StringBuilder();
 				String temp;
 				try {
-					is = new FileInputStream(file);
-					byte[] buffer = new byte[1024]; 
-					int byteread = 0;
-					while ((temp = is.readLine(buffer)) ){
-						
+					isr = new InputStreamReader(new FileInputStream(file),"utf-8");
+					BufferedReader bufReader = new BufferedReader(isr);
+					while((temp = bufReader.readLine()) != null){
+						sb.append(temp);
 					}
-					response.getWriter().write(s);
+					response.getWriter().write(sb.toString());
 				} catch (FileNotFoundException e) {
 					
 				} catch (IOException e) {
 					
 				}finally{
-					
+					if(isr != null){
+						try {
+							isr.close();
+						} catch (IOException e) {
+
+						}
+					}
 				}
 			}
 		}
