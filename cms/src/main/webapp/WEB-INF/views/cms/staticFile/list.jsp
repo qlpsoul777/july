@@ -17,7 +17,7 @@
 	  			<h3>文件列表</h3>
 					<div class="col-xs-12 col-md-12">
 						<a href="${ctx }/template/edit" class="btn btn-primary">上传</a>
-						<a href="${ctx }/template/edit" class="btn btn-primary">下载</a>
+						<a id="downloadFile" class="btn btn-primary">下载</a>
 						<a href="${ctx }/staticFile/list" class="btn btn-primary">返回根目录</a>
 						<form id="queryForm" class="form-horizontal" action="${ctx }/staticFile/list">
 							<input id="totalSize" type="hidden" name="totalSize" value="${pageInfo.totalPages }"/>
@@ -35,7 +35,7 @@
 						<table class="table table-bordered">
 				      		<thead>
 				        		<tr>
-						        	<th><input id="chkAll" type="checkbox"/></th>
+						        	<th></th>
 						          	<th>名称</th>
 						          	<th>类型</th>
 						          	<th>路径</th>
@@ -68,7 +68,7 @@
 						        				<c:if test="${file.isFile}">
 						        					<a href="${ctx }/staticFile/preView?path=${file.path}" target="_blank">查看</a>
 						        				</c:if>
-						        				<a href="${ctx }/staticFile/delete?path=${file.path}">删除</a>
+						        				<a onclick="deleteFile()">删除</a>
 						        			</td>
 						        			
 						        		</tr>
@@ -93,20 +93,15 @@
 	    	pageSize = $('#pageSize').val();
 	    	PageSync.init(currentPage,pageSize,totalSize);
 	    	
-	    	//全选
-	    	$('#chkAll').on('click',function(){
-	    		$('input[name="chkName"]').prop('checked',$(this).prop('checked'));
-	    	});
-	    	
-	    	//删除
-	    	$('#batchDel').on('click',function(){
+	    	$('#downloadFile').on('click',function(){
 	    		var checked = checkedCheckBox();
-	    		if(checked.length > 0){
-		    		if(confirm("确定删除吗？")){
-		    			window.location.href = "${ctx}/site/delete?ids=" + checked;
-		    		}
+	    		console.log(checked);
+	    		if(checked.length == 1){
+	    			window.location.href = "${ctx }/staticFile/download?path="+checked;
 	    		}
 	    	});
+	    	
+	    	
 	    	
 	    });
 		
@@ -118,6 +113,9 @@
 			});
 			if(checked.length<=0){
 				alert("请选择");
+			}
+			if(checked.length > 1){
+				alert("只能同时下载一个文件或文件夹");
 			}
 			return checked;
 		}

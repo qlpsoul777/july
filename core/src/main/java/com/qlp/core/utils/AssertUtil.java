@@ -57,7 +57,7 @@ public final class AssertUtil {
 	}
 	
 	public static void assertTrue(boolean result,ErrorDetail detail,String msg){
-		if(result){
+		if(!result){
 			throw new MyException(detail, msg);
 		}
 	}

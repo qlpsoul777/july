@@ -1,6 +1,6 @@
 package com.qlp.cms.controller;
 
-import java.io.*;
+import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ import com.qlp.cms.util.StaticFileUtil;
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.FileUtil;
-import com.sun.tools.doclets.internal.toolkit.util.DocFinder.Output;
+import com.qlp.core.web.WebUtil;
 
 /**
  * 文件管理controller
@@ -47,33 +47,38 @@ public class StaticFileController {
 		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
 		File file = new File(GlobalCache.dataPath, path);
-		if(file.exists() && file.isFile()){
-			if(FileUtil.isNormalText(file)){
-				response.setContentType("text/plain;charset=utf-8");
-				InputStreamReader  isr = null;
-				StringBuilder sb = new StringBuilder();
-				String temp;
-				try {
-					isr = new InputStreamReader(new FileInputStream(file),"utf-8");
-					BufferedReader bufReader = new BufferedReader(isr);
-					while((temp = bufReader.readLine()) != null){
-						sb.append(temp);
-					}
-					response.getWriter().write(sb.toString());
-				} catch (FileNotFoundException e) {
-					
-				} catch (IOException e) {
-					
-				}finally{
-					if(isr != null){
-						try {
-							isr.close();
-						} catch (IOException e) {
-
-						}
-					}
-				}
-			}
+		if(FileUtil.isNormalText(file)){
+			response.setContentType("text/plain;charset=utf-8");
+			FileUtil.writeOutFile(WebUtil.getFromResponse(response), file);
+		}else if(FileUtil.isPhoto(file)){
+			response.setContentType("image/jpeg");
+			FileUtil.writeOutFile(WebUtil.getFromResponse(response), file);
+		}else{
+			StaticFileUtil.download(file,response);
 		}
 	}
+	
+	@RequestMapping("/download")
+	public void download(HttpServletRequest request,HttpServletResponse response,String path){
+		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
+		
+		File file = new File(GlobalCache.dataPath, path);
+		StaticFileUtil.download(file,response);
+		
+	}
+	
+	@RequestMapping("/delete")
+	public String delete(HttpServletRequest request,String path){
+		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
+		
+		File file = new File(GlobalCache.dataPath, path);
+		file.delete();
+		
+		String filePath = StaticFileUtil.getFilePath(request);
+		request.setAttribute("filePath", filePath);
+		
+		return "redirect:list";
+	}
+
+	
 }

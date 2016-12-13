@@ -1,11 +1,14 @@
 package com.qlp.cms.util;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +26,11 @@ import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.DataConvertUtil;
 import com.qlp.core.utils.DateUtil;
 import com.qlp.core.utils.DateUtil.FormatDate;
+import com.qlp.core.utils.FileUtil;
 import com.qlp.core.utils.LogUtil;
 import com.qlp.core.utils.StringUtil;
 import com.qlp.core.utils.UnitConverterUtil;
+import com.qlp.core.web.WebUtil;
 
 public class StaticFileUtil {
 	
@@ -89,6 +94,40 @@ public class StaticFileUtil {
 			}
 		}
 		return pageInfo;
+	}
+	
+	/**
+	 * 
+	 * @param file
+	 * @param response
+	 */
+	public static void download(File file, HttpServletResponse response) {
+		File downLoadFile = null;
+		if(file.exists()){
+			if(file.isFile()){
+				downLoadFile = file;
+			}else if(file.isDirectory()){
+//				downLoadFile = FileUtils.createZipFile(request);
+//				fileName += Constant.ZIP;
+//				ZipHelper.compress(file.getAbsolutePath(), downLoadFile.getAbsolutePath());
+			}
+			
+			String fileName = StringUtil.trim(downLoadFile.getName());
+			try {
+				fileName = URLEncoder.encode(fileName, "UTF8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}  
+			response.setContentType("application/octet-stream");
+			response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+			response.addHeader("Content-Length", "" + downLoadFile.length());
+			
+			FileUtil.writeOutFile(WebUtil.getFromResponse(response),file);
+			
+			
+			
+		}
+		
 	}
 
 }
