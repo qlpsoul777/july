@@ -39,7 +39,7 @@ public class WebUtil {
 		String fileName = StringUtil.trim(file.getName());
 		LogUtil.info(logger, "原始文件名：{0}", fileName);
 		try {
-			fileName = encodeFileName(request, response,fileName);
+			fileName = encodeFileName(request,fileName);
 		} catch (UnsupportedEncodingException e) {
 			LogUtil.error(logger, "文件名{0}编码时出错：{1}",fileName, e);
 		}
@@ -50,8 +50,7 @@ public class WebUtil {
 		
 	}
 
-	private static String encodeFileName(HttpServletRequest request,
-			HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
+	private static String encodeFileName(HttpServletRequest request,String fileName) throws UnsupportedEncodingException {
 		String userAgent = request.getHeader("User-Agent").toLowerCase();
 	    if (StringUtil.isEmpty(userAgent)){
 	    	return "filename=" + URLEncoder.encode(fileName, "UTF-8");

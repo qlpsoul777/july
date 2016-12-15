@@ -13,7 +13,8 @@ import java.util.Date;
 public class DateUtil {
 	
 	public enum FormatDate{
-		YMD_1("yyyy-MM-dd");
+		YMD_1("yyyy-MM-dd"),
+		YMDHMSS("yyyyMMddHHmmssSSS");
 		
 		private final String pattern; 
 		

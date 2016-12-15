@@ -112,13 +112,14 @@ public class StaticFileUtil {
 			if(file.isFile()){
 				downLoadFile = file;
 			}else if(file.isDirectory()){
-//				downLoadFile = FileUtils.createZipFile(request);
-//				fileName += Constant.ZIP;
-//				ZipHelper.compress(file.getAbsolutePath(), downLoadFile.getAbsolutePath());
+				downLoadFile = FileUtil.createZipFile(GlobalCache.dataPath);
+				FileUtil.compress(file.getAbsolutePath(), downLoadFile.getAbsolutePath());
 			}
 			WebUtil.setDownloadResponseHeader(request,response,downLoadFile);
 			FileUtil.writeOutFile(WebUtil.getFromResponse(response),file);
-			
+			if(StringUtil.endsWith(downLoadFile.getName(),".zip")){
+				downLoadFile.delete();
+			}
 			
 			
 		}

@@ -24,7 +24,6 @@ public class StartupInitializer implements ServletContextListener {
 			path = event.getServletContext().getInitParameter("dataPath");
 		}
 		GlobalCache.dataPath = path;
-		path = null;
 		
 	}
 
