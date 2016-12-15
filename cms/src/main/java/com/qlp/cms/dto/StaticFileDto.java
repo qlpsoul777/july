@@ -3,10 +3,9 @@ package com.qlp.cms.dto;
 public class StaticFileDto {
 
 	private String name;				//文件名
-	private String size;					//文件大小
+	private String size;				//文件大小
 	private String modifyTime;			//最后修改时间
 	private String path;				//相对路径
-	private String absolutePath;		//绝对路径
 	private boolean isFile;				//是否是文件
 	
 	public String getName() {
@@ -39,14 +38,6 @@ public class StaticFileDto {
 	
 	public void setPath(String path) {
 		this.path = path;
-	}
-	
-	public String getAbsolutePath() {
-		return absolutePath;
-	}
-	
-	public void setAbsolutePath(String absolutePath) {
-		this.absolutePath = absolutePath;
 	}
 	
 	public boolean getIsFile() {

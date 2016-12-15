@@ -12,6 +12,11 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * 以自增/序列为主键的顶层实体类
+ * @author qlp
+ *
+ */
 @MappedSuperclass
 @Access(AccessType.PROPERTY)
 public class IdEntity extends BaseEntity{

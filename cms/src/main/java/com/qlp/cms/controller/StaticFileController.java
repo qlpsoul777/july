@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qlp.cache.GlobalCache;
 import com.qlp.cms.dto.StaticFileDto;
@@ -15,6 +16,7 @@ import com.qlp.cms.util.StaticFileUtil;
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.FileUtil;
+import com.qlp.core.utils.StringUtil;
 import com.qlp.core.web.WebUtil;
 
 /**
@@ -54,7 +56,7 @@ public class StaticFileController {
 			response.setContentType("image/jpeg");
 			FileUtil.writeOutFile(WebUtil.getFromResponse(response), file);
 		}else{
-			StaticFileUtil.download(file,response);
+			StaticFileUtil.download(request,response,file);
 		}
 	}
 	
@@ -63,21 +65,18 @@ public class StaticFileController {
 		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
 		File file = new File(GlobalCache.dataPath, path);
-		StaticFileUtil.download(file,response);
+		StaticFileUtil.download(request,response,file);
 		
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(HttpServletRequest request,String path){
-		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
+	public void delete(HttpServletRequest request,HttpServletResponse response,String paths){
 		
-		File file = new File(GlobalCache.dataPath, path);
-		file.delete();
+		AssertUtil.assertNotBlank(paths, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
-		String filePath = StaticFileUtil.getFilePath(request);
-		request.setAttribute("filePath", filePath);
+		StaticFileUtil.batchDel(response,paths);
 		
-		return "redirect:list";
+		
 	}
 
 	

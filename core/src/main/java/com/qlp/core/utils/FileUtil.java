@@ -97,6 +97,20 @@ public class FileUtil {
 		
 	}
 	
+    public static void deleteAllFiles(File path) {  
+        if (!path.exists())  
+            return;  
+        if (path.isFile()) {  
+            path.delete();  
+            return;  
+        }  
+        File[] files = path.listFiles();  
+        for (int i = 0; i < files.length; i++) {  
+            deleteAllFiles(files[i]);  
+        }  
+        path.delete();  
+    }  
+	
 	public static void compress(String filePath){
 		
 	}

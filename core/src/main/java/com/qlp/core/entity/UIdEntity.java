@@ -11,6 +11,11 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 以uuid为主键的顶层实体类
+ * @author qlp
+ *
+ */
 @MappedSuperclass
 @Access(AccessType.PROPERTY)
 public class UIdEntity {

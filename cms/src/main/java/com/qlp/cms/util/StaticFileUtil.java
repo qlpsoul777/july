@@ -1,11 +1,10 @@
 package com.qlp.cms.util;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +21,7 @@ import com.qlp.cms.dto.StaticFileDto;
 import com.qlp.cms.entity.Site;
 import com.qlp.constant.CmsConstant;
 import com.qlp.core.Exception.ErrorDetail.SysErrorEnum;
+import com.qlp.core.entity.MsgInfo;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.DataConvertUtil;
 import com.qlp.core.utils.DateUtil;
@@ -76,15 +76,20 @@ public class StaticFileUtil {
 				
 				List<StaticFileDto> content = new ArrayList<StaticFileDto>(total);
 				StaticFileDto dto = null;
+				File fileDto = null;
 				for(int i = 0; i < total; i++){
 					if((i >= pageNum * pageSize) && (i < (pageNum + 1) * pageSize)){
 						dto = new StaticFileDto();
-						dto.setName(files[i].getName());
-						dto.setPath(filePath + files[i].getName());
-						dto.setAbsolutePath(files[i].getAbsolutePath());
-						dto.setSize(UnitConverterUtil.getFileSize(files[i].length()));
-						dto.setModifyTime(DateUtil.stamp2DateStr(files[i].lastModified(), FormatDate.YMD_1));
-						dto.setIsFile(files[i].isFile());
+						fileDto = files[i];
+						dto.setName(fileDto.getName());
+						if(fileDto.isDirectory()){
+							dto.setPath(filePath + fileDto.getName() + File.separator);
+						}else{
+							dto.setPath(filePath + fileDto.getName());
+							dto.setSize(UnitConverterUtil.getFileSize(fileDto.length()));
+						}
+						dto.setModifyTime(DateUtil.stamp2DateStr(fileDto.lastModified(), FormatDate.YMD_1));
+						dto.setIsFile(fileDto.isFile());
 						content.add(dto);
 					}
 				}
@@ -101,7 +106,7 @@ public class StaticFileUtil {
 	 * @param file
 	 * @param response
 	 */
-	public static void download(File file, HttpServletResponse response) {
+	public static void download(HttpServletRequest request,HttpServletResponse response,File file) {
 		File downLoadFile = null;
 		if(file.exists()){
 			if(file.isFile()){
@@ -111,23 +116,30 @@ public class StaticFileUtil {
 //				fileName += Constant.ZIP;
 //				ZipHelper.compress(file.getAbsolutePath(), downLoadFile.getAbsolutePath());
 			}
-			
-			String fileName = StringUtil.trim(downLoadFile.getName());
-			try {
-				fileName = URLEncoder.encode(fileName, "UTF8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}  
-			response.setContentType("application/octet-stream");
-			response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-			response.addHeader("Content-Length", "" + downLoadFile.length());
-			
+			WebUtil.setDownloadResponseHeader(request,response,downLoadFile);
 			FileUtil.writeOutFile(WebUtil.getFromResponse(response),file);
 			
 			
 			
 		}
 		
+	}
+
+	public static void batchDel(HttpServletResponse response, String paths) {
+		StringTokenizer st = new StringTokenizer(paths, ",");
+		File file = null;
+		MsgInfo info = null;
+		try{
+			while(st.hasMoreElements()){
+				file = new File(GlobalCache.dataPath, (String) st.nextElement());
+				FileUtil.deleteAllFiles(file);
+			}
+			info = new MsgInfo(Boolean.TRUE);
+		}catch(Exception e){
+			LogUtil.error(logger, "删除文件{0}时出错：{1}", file.getAbsolutePath(),e);
+			info = new MsgInfo(Boolean.FALSE,"删除失败");
+		}
+		WebUtil.responseJson(response,info);
 	}
 
 }

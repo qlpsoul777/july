@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 public class UnitConverterUtil {
 	
 	private static final String[] FILE_SIZE_UNITS = {"B","KB","MB","GB","TB","PB"};
+	
 	/**
 	 * 返回带单位的文件大小
 	 * @param size 必须是Byte(字节)为单位的Long值
@@ -26,8 +27,4 @@ public class UnitConverterUtil {
 		return df.format(size) + FILE_SIZE_UNITS[num];
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(getFileSize(10L));
-	}
-
 }
