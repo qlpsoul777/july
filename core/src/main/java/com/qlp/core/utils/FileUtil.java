@@ -1,13 +1,13 @@
 package com.qlp.core.utils;
 
-import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.*;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * 文件操作工具类
@@ -15,55 +15,29 @@ import java.util.zip.ZipFile;
 public class FileUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
-	
-	private static final String[] TEXTS = {".css",".html",".js",".txt",".json",".xml"};
-	
-	private static final String[] PHOTOS = {".jpg",".png",".jpeg",".gif"};
 
-	private static final String ZIP = ".zip";
+	
 
 	private static final String TEMP_DIR = "temp";
-
-	/**
-	 * 判断文件是否是普通文本文件
-	 * @param file
-	 * @return
-	 */
-	public static boolean isNormalText(File file){
-		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
-		AssertUtil.assertTrue(file.exists() && file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不存在/文件不能是文件夹");
-		
-		for(String name : TEXTS){
-			if(StringUtil.equalsIgnoreCase(name,getAfterName(file.getName()))){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * 判断文件是否是图片文件
-	 * @param file
-	 * @return
-	 */
-	public static boolean isPhoto(File file){
-		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
-		AssertUtil.assertTrue(file.exists() && file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不存在/文件不能是文件夹");
-		
-		for(String name : PHOTOS){
-			if(StringUtil.equalsIgnoreCase(name,getAfterName(file.getName()))){
-				return true;
-			}
-		}
-		return false;
-	}
+	
+	private static final boolean DEFAULT_ISDELETE = Boolean.FALSE;
 
 	/**
 	 *	将文件用指定输出流输出
-	 * @param os
-	 * @param file
+	 * @param os 输出流
+	 * @param file 文件,不能是文件夹或null
 	 */
-	public static void writeOutFile(OutputStream os, File file) {
+	public static void writeOutFile(OutputStream fromResponse, File file) {
+		writeOutFile(fromResponse,file,DEFAULT_ISDELETE);
+	}
+
+	/**
+	 *	将文件用指定输出流输出，并根据isDelete决定输出后是否删除原文件true：删除；false：不删除
+	 * @param os 输出流
+	 * @param file 文件,不能是文件夹或null
+	 * @param isDelete 输出后是否删除原文件 
+	 */
+	public static void writeOutFile(OutputStream os, File file,boolean isDelete) {
 		InputStream fis = null;
 		int count;
 		byte[] buffer = new byte[1024 * 1024];
@@ -76,128 +50,57 @@ public class FileUtil {
 		} catch (Exception e) {
 			LogUtil.error(logger, "写出文件{0}出错：{1}", file.getAbsolutePath(),e);
 		}finally{
+			if(isDelete){
+				file.delete();
+			}
 			IoUtil.close(fis,os);
 		}
 
 	}
 
 	/**
-	 * 删除指定文件
+	 * 删除指定文件或文件夹
 	 * @param path
 	 */
-	public static void deleteAllFiles(File path) {
-		if (!path.exists())
+	public static void deleteAllFiles(File file) {
+		if (!file.exists())
 			return;
-		if (path.isFile()) {
-			path.delete();
+		if (file.isFile()) {
+			file.delete();
 			return;
 		}
-		File[] files = path.listFiles();
+		File[] files = file.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			deleteAllFiles(files[i]);
 		}
-		path.delete();
 	}
 
 	/**
-	 * 生成临时目录下zip文件
+	 * 在临时目录下生成zip文件
 	 * @param parentPath
 	 * @return
 	 */
 	public static File createZipFile(String parentPath) {
-		File downLoadFile = new File(parentPath,TEMP_DIR);
-		if(!downLoadFile.exists()){
-			downLoadFile.mkdirs();
+		File file = new File(parentPath,TEMP_DIR);
+		if(!file.exists()){
+			file.mkdirs();
 		}
-		downLoadFile = new File(downLoadFile,RandomUtil.getLongTimeRandom(6)+ZIP);
-		return downLoadFile;
+		file = new File(file,FileNameUtil.buildZipName());
+		return file;
 	}
-
-	public static String getBeforeName(String originName){
-		AssertUtil.assertNotBlank(originName, BusiErrorEnum.INPUT_NOT_EXIST, "文件名不能为null");
-		
-		int index0 = originName.lastIndexOf('/');
-		int index = originName.lastIndexOf('.');
-		if( index0 >= 0){
-			if((index0 <index) && (index0 < originName.length())){
-				originName = originName.substring(index0+1,index);
-			}else{
-				originName = originName.substring(index0+1,originName.length());
-			}
-		}else{
-			if(index > 0){
-				originName = originName.substring(0,index);
-			}
-		}
-		
-		return originName;
-	}
-	
-	public static String getAfterName(String originName){
-		AssertUtil.assertNotBlank(originName, BusiErrorEnum.INPUT_NOT_EXIST, "文件名不能为null");
-		
-		int index = originName.lastIndexOf('.');
-		if( index > 0){
-			originName = originName.substring(index,originName.length());
-		}else{
-			originName = "";
-		}
-		
-		return originName;
-	}
-
 
 	
-	public static void compress(String source, String target){
-		int readedBytes;
-		byte[] buffer = new byte[4096];
-		try
-		{
-			File srcFile = new File(source);
-			if (srcFile.isFile())
-			{
-				ZipFile zipFile = new ZipFile(source);
 
-				for (Enumeration entries = zipFile.entries(); entries.hasMoreElements(); )
-				{
-					ZipEntry entry = (ZipEntry)entries.nextElement();
-					File file = new File(target + "/" + entry.getName());
-
-					if (entry.isDirectory())
-					{
-						file.mkdirs();
-					}
-					else
-					{
-						File parent = file.getParentFile();
-						if (!parent.exists())
-						{
-							parent.mkdirs();
-						}
-
-						InputStream inputStream = zipFile.getInputStream(entry);
-						FileOutputStream outStream = new FileOutputStream(file);
-						while ((readedBytes = inputStream.read(buffer)) > 0)
-						{
-							outStream.write(buffer, 0, readedBytes);
-						}
-						outStream.close();
-						inputStream.close();
-					}
-				}
-				zipFile.close();
-			}
-		}
-		catch (IOException ex)
-		{
-			logger.error("", ex);
-		}
+	
+	public static void compress(String sourcePath, String targetPath,String fileName){
 		
 	}
 	
-	public static void compress(File file){
+	public static void compress(File sourceFile,File targetFile){
 		
 	}
+
+	
 
 
 

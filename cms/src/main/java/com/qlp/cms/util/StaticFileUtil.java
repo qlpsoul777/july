@@ -20,12 +20,15 @@ import com.qlp.cache.GlobalCache;
 import com.qlp.cms.dto.StaticFileDto;
 import com.qlp.cms.entity.Site;
 import com.qlp.constant.CmsConstant;
+import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.Exception.ErrorDetail.SysErrorEnum;
 import com.qlp.core.entity.MsgInfo;
+import com.qlp.core.enums.ResponseTypeEnum;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.DataConvertUtil;
 import com.qlp.core.utils.DateUtil;
 import com.qlp.core.utils.DateUtil.FormatDate;
+import com.qlp.core.utils.FileNameUtil;
 import com.qlp.core.utils.FileUtil;
 import com.qlp.core.utils.LogUtil;
 import com.qlp.core.utils.StringUtil;
@@ -101,6 +104,22 @@ public class StaticFileUtil {
 		return pageInfo;
 	}
 	
+public static void preView(HttpServletRequest request,HttpServletResponse response, String path) {
+		
+		File file = new File(GlobalCache.dataPath, path);
+		
+		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
+		AssertUtil.assertTrue(file.exists() && file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不存在/文件不能是文件夹");
+		
+		String fileName = FileNameUtil.getAfterName(file.getName());
+		String contentType = ResponseTypeEnum.from(fileName).getContentType();
+		LogUtil.info(logger, "预览文件名：{0}时ContentType为：{1}", fileName,contentType);
+		
+		response.setContentType(contentType);
+		FileUtil.writeOutFile(WebUtil.getFromResponse(response), file);
+		
+	}
+	
 	/**
 	 * 
 	 * @param file
@@ -108,20 +127,17 @@ public class StaticFileUtil {
 	 */
 	public static void download(HttpServletRequest request,HttpServletResponse response,File file) {
 		File downLoadFile = null;
+		boolean isDelete = false;
 		if(file.exists()){
 			if(file.isFile()){
 				downLoadFile = file;
-			}else if(file.isDirectory()){
+			}else{
+				isDelete = true;
 				downLoadFile = FileUtil.createZipFile(GlobalCache.dataPath);
-				FileUtil.compress(file.getAbsolutePath(), downLoadFile.getAbsolutePath());
+				FileUtil.compress(file, downLoadFile);
 			}
 			WebUtil.setDownloadResponseHeader(request,response,downLoadFile);
-			FileUtil.writeOutFile(WebUtil.getFromResponse(response),file);
-			if(StringUtil.endsWith(downLoadFile.getName(),".zip")){
-				downLoadFile.delete();
-			}
-			
-			
+			FileUtil.writeOutFile(WebUtil.getFromResponse(response),downLoadFile,isDelete);
 		}
 		
 	}
@@ -142,5 +158,7 @@ public class StaticFileUtil {
 		}
 		WebUtil.responseJson(response,info);
 	}
+
+	
 
 }
