@@ -68,7 +68,7 @@ public class SiteController {
 	 * @return
 	 */
 	@RequestMapping("/save")
-	public String save(HttpServletRequest request,@ModelAttribute Site site){
+	public String save(@ModelAttribute Site site){
 		siteService.save(site);
 		return "redirect:list";
 	}

@@ -58,7 +58,7 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	public MyRepositoryImpl(JpaEntityInformation<T,ID> entityInformation, EntityManager em) {
 		super(entityInformation, em);
 		this.em = em;
-		this.clazz = (Class<T>) entityInformation.getJavaType();
+		this.clazz = entityInformation.getJavaType();
 	}
 
 	/**
@@ -82,14 +82,10 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	@Override
 	public Page<T> queryPageByMap(Map<String, Object> map, Pageable pageable) {
 		Criteria c = mapToCriteria(map);
-//		List<T> list = c.list();
         long total = countCriteriaList(c);
-//        long total = list.size();
-        
         c.setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize());
         createCriteria(c, pageable.getSort());
-		Page<T> page = new PageImpl<T>(c.list(), pageable, total);
-        return page;
+        return new PageImpl<>(c.list(), pageable, total);
 	}
 
 	private Criteria createCriteria(Criteria criteria, Sort sort) {
@@ -113,12 +109,12 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
         // 先把Projection、ResultTransformer、OrderBy取出来,清空三者后再执行Count操作
         Projection projection = impl.getProjection();
         ResultTransformer resultTransformer = impl.getResultTransformer();
-        List<CriteriaImpl.OrderEntry> orderEntries = null;
+        List<CriteriaImpl.OrderEntry> orderEntries;
         orderEntries = (List<OrderEntry>)ReflectionUtil.getFieldValue(impl, "orderEntries");
-        ReflectionUtil.setFieldValue(impl, "orderEntries", new ArrayList<Object>());
+        ReflectionUtil.setFieldValue(impl, "orderEntries", new ArrayList<>());
         //获取记录总数
         Long totalCount = (Long) c.setProjection(Projections.rowCount()).uniqueResult();
-        long total = totalCount != null ? totalCount.longValue() : 0L;
+        long total = totalCount != null ? totalCount : 0L;
         // 将之前的Projection,ResultTransformer和OrderBy条件重新设回去
         c.setProjection(projection);
         if (projection == null) {
@@ -242,8 +238,7 @@ public class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepos
 	 * @return
 	 */
 	public Criteria createCriteria() {
-		Criteria criteria = getSession().createCriteria(clazz);
-		return criteria;
+		return getSession().createCriteria(clazz);
 	}
 	 
 	/**

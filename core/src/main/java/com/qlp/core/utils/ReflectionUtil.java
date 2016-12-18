@@ -73,8 +73,7 @@ public class ReflectionUtil {
         Class<?> clazz = obj.getClass();
         Field field = findField(clazz,fieldName);
         makeAccessible(field);
-        Object fieldValue = getField(field,obj);
-        return fieldValue;
+        return getField(field,obj);
     }
 
     /**

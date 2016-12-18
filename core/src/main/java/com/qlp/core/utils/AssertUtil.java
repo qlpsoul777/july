@@ -49,13 +49,25 @@ public final class AssertUtil {
 			throw new MyException(detail, msg);
 		}
 	}
-	
+
+	/**
+	 * 判断map不为blank,否则抛出MyException
+	 * @param map
+	 * @param detail
+	 * @param msg
+	 */
 	public static void assertNotBlank(Map<?,?> map,ErrorDetail detail,String msg){
 		if(CollectionUtil.isBlank(map)){
 			throw new MyException(detail, msg);
 		}
 	}
-	
+
+	/**
+	 * 判断结果为true,否则抛出MyException
+	 * @param result
+	 * @param detail
+	 * @param msg
+	 */
 	public static void assertTrue(boolean result,ErrorDetail detail,String msg){
 		if(!result){
 			throw new MyException(detail, msg);

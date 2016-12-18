@@ -77,9 +77,9 @@ public class StaticFileUtil {
 				int pageNum = DataConvertUtil.toInt(request.getParameter("currentPage"), 0);
 				int pageSize = DataConvertUtil.toInt(request.getParameter("pageSize"), 10);
 				
-				List<StaticFileDto> content = new ArrayList<StaticFileDto>(total);
-				StaticFileDto dto = null;
-				File fileDto = null;
+				List<StaticFileDto> content = new ArrayList<>(total);
+				StaticFileDto dto;
+				File fileDto;
 				for(int i = 0; i < total; i++){
 					if((i >= pageNum * pageSize) && (i < (pageNum + 1) * pageSize)){
 						dto = new StaticFileDto();
@@ -104,7 +104,7 @@ public class StaticFileUtil {
 		return pageInfo;
 	}
 	
-public static void preView(HttpServletRequest request,HttpServletResponse response, String path) {
+public static void preView(HttpServletResponse response, String path) {
 		
 		File file = new File(GlobalCache.dataPath, path);
 		
@@ -126,7 +126,7 @@ public static void preView(HttpServletRequest request,HttpServletResponse respon
 	 * @param response
 	 */
 	public static void download(HttpServletRequest request,HttpServletResponse response,File file) {
-		File downLoadFile = null;
+		File downLoadFile;
 		boolean isDelete = false;
 		if(file.exists()){
 			if(file.isFile()){
@@ -144,8 +144,8 @@ public static void preView(HttpServletRequest request,HttpServletResponse respon
 
 	public static void batchDel(HttpServletResponse response, String paths) {
 		StringTokenizer st = new StringTokenizer(paths, ",");
-		File file = null;
-		MsgInfo info = null;
+		File file;
+		MsgInfo info;
 		try{
 			while(st.hasMoreElements()){
 				file = new File(GlobalCache.dataPath, (String) st.nextElement());
@@ -153,7 +153,7 @@ public static void preView(HttpServletRequest request,HttpServletResponse respon
 			}
 			info = new MsgInfo(Boolean.TRUE);
 		}catch(Exception e){
-			LogUtil.error(logger, "删除文件{0}时出错：{1}", file.getAbsolutePath(),e);
+			LogUtil.error(logger, "删除文件时出错：{1}",e);
 			info = new MsgInfo(Boolean.FALSE,"删除失败");
 		}
 		WebUtil.responseJson(response,info);

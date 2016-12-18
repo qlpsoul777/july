@@ -46,7 +46,7 @@ public class TemplateController {
 	 * @return
 	 */
 	@RequestMapping("/manager")
-	public String manager(HttpServletRequest request){
+	public String manager(){
 		return "/cms/template/manager";
 	}
 	
@@ -55,13 +55,12 @@ public class TemplateController {
 	public String tree(HttpServletRequest request){
 		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
 		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
-		String treeJson = catalogService.queryCatalogTree(site);
-		return treeJson;
+		return catalogService.queryCatalogTree(site);
 	}
 	
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request,@ModelAttribute Template template,Long catalogId){
-		Catalog catalog = null;
+		Catalog catalog;
 		if(catalogId != null){
 			catalog = catalogService.get(catalogId);
 			AssertUtil.assertNotNull(catalog,BusiErrorEnum.OUTPUT_NOT_FOUND,"根据传入参数catalogId未查询到栏目信息");

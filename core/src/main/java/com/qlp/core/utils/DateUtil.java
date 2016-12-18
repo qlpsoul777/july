@@ -23,8 +23,7 @@ public class DateUtil {
 		}
 
 		public DateFormat getFormat(){
-			SimpleDateFormat sdf = new SimpleDateFormat(this.pattern);
-			return sdf;
+			return new SimpleDateFormat(this.pattern);
 		}
 	}
 	
@@ -35,8 +34,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static String date2String(Date date,FormatDate format){
-		String str = format.getFormat().format(date);
-		return str;
+		return format.getFormat().format(date);
 	}
 	
 	/**
@@ -47,14 +45,19 @@ public class DateUtil {
 	 */
 	public static Date string2Date(String dateStr,FormatDate format){
 		try {
-			Date date = format.getFormat().parse(dateStr);
-			return date;
+			return format.getFormat().parse(dateStr);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
+	/**
+	 * 时间戳值转字符串
+	 * @param times
+	 * @param format
+	 * @return
+	 */
 	public static String stamp2DateStr(long times,FormatDate format){
 		Date date =new Date(times);
 		return date2String(date,format);

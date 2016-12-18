@@ -46,10 +46,10 @@ public class StaticFileController {
 	 * @param path
 	 */
 	@RequestMapping("/preView")
-	public void preView(HttpServletRequest request,HttpServletResponse response,String path){
+	public void preView(HttpServletResponse response,String path){
 		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
-		StaticFileUtil.preView(request,response,path);
+		StaticFileUtil.preView(response,path);
 	}
 	
 	/**
@@ -65,9 +65,14 @@ public class StaticFileController {
 		File file = new File(GlobalCache.dataPath, path);
 		StaticFileUtil.download(request,response,file);
 	}
-	
+
+	/**
+	 * 文件删除
+	 * @param response
+	 * @param paths
+	 */
 	@RequestMapping("/delete")
-	public void delete(HttpServletRequest request,HttpServletResponse response,String paths){
+	public void delete(HttpServletResponse response,String paths){
 		AssertUtil.assertNotBlank(paths, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
 		StaticFileUtil.batchDel(response,paths);

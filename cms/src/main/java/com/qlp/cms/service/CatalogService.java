@@ -93,7 +93,7 @@ public class CatalogService {
 	 */
 	public String getPath(Site site, Catalog parent, String alias) {
 		LogUtil.info(logger, "获取栏目路径时接收到的参数site:{0},parent:{1},alias:{2}", site,parent,alias);
-		String path =null;
+		String path;
 		if(parent == null){
 			path = CmsConstant.OVER_CHAR + site.getNum() + CmsConstant.OVER_CHAR + alias;
 		}else{

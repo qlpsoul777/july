@@ -1,14 +1,5 @@
 package com.qlp.cms.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.alibaba.fastjson.JSON;
 import com.qlp.cms.entity.Catalog;
 import com.qlp.cms.entity.Site;
@@ -19,6 +10,13 @@ import com.qlp.core.enums.ContentTypeEnum;
 import com.qlp.core.enums.StatusEnum;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.ConstantsUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/catalog")
@@ -49,39 +47,43 @@ public class CatalogController {
 	public String tree(HttpServletRequest request){
 		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
 		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
-		String treeJson = catalogService.queryCatalogTree(site);
-		return treeJson;
+
+		return catalogService.queryCatalogTree(site);
 	}
 	
 	/**
 	 * 删除栏目
-	 * @param request
-	 * @param response
 	 * @param id
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	public String delete(HttpServletRequest request,Long id){
-		String isSuccess = catalogService.delete(id);
-		return isSuccess;
+	public String delete(Long id){
+		return catalogService.delete(id);
 	}
 	
 	/**
-	 * 
+	 * 查看栏目信息
 	 * @param request
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping("/info")
 	@ResponseBody
-	public String info(HttpServletRequest request,Long id){
+	public String info(Long id){
 		Catalog catalog = catalogService.get(id);
 		return JSON.toJSONString(catalog);
 	}
-	
+
+	/**
+	 * 保存栏目信息
+	 * @param request
+	 * @param catalog
+	 * @param pId
+	 * @return
+	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public String save(HttpServletRequest request,HttpServletResponse response,@ModelAttribute Catalog catalog,Long pId) throws Exception{
+	public String save(HttpServletRequest request,@ModelAttribute Catalog catalog,Long pId){
 		Site site = (Site) request.getSession().getAttribute(CmsConstant.SITE_KEY);
 		AssertUtil.assertNotNull(site, SysErrorEnum.DOMAIN_NOT_FOUND, "无法从session中获取站点信息");
 		catalog.setSite(site);

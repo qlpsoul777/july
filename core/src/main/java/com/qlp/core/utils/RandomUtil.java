@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * Created by july on 2016/12/15.
+ * 随机数生成工具类
  */
 public class RandomUtil {
 	private static final int DEFAULT_LEN = 6;
