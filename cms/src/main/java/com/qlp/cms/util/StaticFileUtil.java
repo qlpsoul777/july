@@ -133,8 +133,8 @@ public static void preView(HttpServletResponse response, String path) {
 				downLoadFile = file;
 			}else{
 				isDelete = true;
-				downLoadFile = FileUtil.createZipFile(GlobalCache.dataPath);
-				FileUtil.compress(file, downLoadFile);
+				downLoadFile = createZipFile(GlobalCache.dataPath);
+				FileUtil.compress(file, downLoadFile,true);
 			}
 			WebUtil.setDownloadResponseHeader(request,response,downLoadFile);
 			FileUtil.writeOutFile(WebUtil.getFromResponse(response),downLoadFile,isDelete);
@@ -159,6 +159,21 @@ public static void preView(HttpServletResponse response, String path) {
 		WebUtil.responseJson(response,info);
 	}
 
-	
+	/**
+	 * 在临时目录下生成zip文件
+	 * @param parentPath 父级路径
+	 * @return
+	 */
+	private static File createZipFile(String parentPath) {
+		
+		AssertUtil.assertNotNull(parentPath, BusiErrorEnum.INPUT_NOT_EXIST, "文件父级目录路径不能为空");
+		
+		File file = new File(parentPath,CmsConstant.TEMP_DIR);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		file = new File(file,FileNameUtil.buildZipName());
+		return file;
+	}
 
 }
