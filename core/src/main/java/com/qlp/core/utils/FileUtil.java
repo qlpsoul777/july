@@ -37,7 +37,7 @@ public class FileUtil {
 	 */
 	public static void writeInFile(InputStream ins, File file) {
 		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
-		AssertUtil.assertTrue(file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不能是文件夹");
+		//AssertUtil.assertTrue(file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不能是文件夹");
 		
 		OutputStream os = null;
 		int count;

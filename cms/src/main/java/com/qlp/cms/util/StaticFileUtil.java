@@ -107,7 +107,7 @@ public class StaticFileUtil {
 		return pageInfo;
 	}
 	
-public static void preView(HttpServletResponse response, String path) {
+	public static void preView(HttpServletResponse response, String path) {
 		
 		File file = new File(GlobalCache.dataPath, path);
 		
