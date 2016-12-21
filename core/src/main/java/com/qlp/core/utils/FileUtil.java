@@ -29,6 +29,31 @@ public class FileUtil {
 	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
 	private static final boolean DEFAULT_ISDELETE = Boolean.FALSE;
+	
+	/**
+	 * 输入流写入文件
+	 * @param ins
+	 * @param file
+	 */
+	public static void writeInFile(InputStream ins, File file) {
+		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
+		AssertUtil.assertTrue(file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不能是文件夹");
+		
+		OutputStream os = null;
+		int count;
+		byte[] buffer = new byte[1024];
+		try {
+			os = new BufferedOutputStream(new FileOutputStream(file));
+			while ((count = ins.read(buffer)) != -1) {
+				os.write(buffer, 0, count);
+			}
+			os.flush();
+		} catch (Exception e) {
+			LogUtil.error(logger, "写入文件{0}出错：{1}", file.getAbsolutePath(),e);
+		}finally{
+			IoUtil.close(ins,os);
+		}
+	}
 
 	/**
 	 *	将文件用指定输出流输出
@@ -265,6 +290,8 @@ public class FileUtil {
         }
 		return targetFile;
 	}
+
+	
 
 	
 

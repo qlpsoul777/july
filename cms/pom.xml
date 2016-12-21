@@ -1,53 +1,55 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.qlp.july</groupId>
-    <artifactId>july</artifactId>
-    <version>0.0.1</version>
-  </parent>
-  
-  <artifactId>cms</artifactId>
-  <packaging>war</packaging>
-  <name>cms Maven Webapp</name>
-  
-  <properties>
-  	<core.version>0.0.1</core.version>
-  	<jstl.version>1.2</jstl.version>
-  </properties>
-  
-  <dependencies>
-  	<dependency>
-  		<groupId>com.qlp.july</groupId>
-  		<artifactId>core</artifactId>
-  		<version>${core.version}</version>
-  	</dependency>
-    <dependency>
-		<groupId>com.alibaba</groupId>
-		<artifactId>druid</artifactId>
-	</dependency>
-    <dependency>
-         <groupId>javax.servlet</groupId>
-         <artifactId>javax.servlet-api</artifactId>
-     </dependency>
-     <dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>${jstl.version}</version>
-	 </dependency>    
-     <dependency>
-         <groupId>mysql</groupId>
-         <artifactId>mysql-connector-java</artifactId>
-     </dependency>
-     <dependency>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.qlp.july</groupId>
+		<artifactId>july</artifactId>
+		<version>0.0.1</version>
+	</parent>
+
+	<artifactId>cms</artifactId>
+	<packaging>war</packaging>
+	<name>cms Maven Webapp</name>
+
+	<properties>
+		<core.version>0.0.1</core.version>
+		<jstl.version>1.2</jstl.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.qlp.july</groupId>
+			<artifactId>core</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-		</dependency>  
-        
-  </dependencies>
-  
-  <build>
-    <finalName>cms</finalName>
-  </build>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>cms</finalName>
+	</build>
 </project>

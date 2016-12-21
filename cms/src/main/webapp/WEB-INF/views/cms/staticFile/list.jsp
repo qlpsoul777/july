@@ -16,7 +16,7 @@
 	  		<div class="row">
 	  			<h3>文件列表</h3>
 					<div class="col-xs-12 col-md-12">
-						<a href="javascript:removett()" class="btn btn-primary">上传</a>
+						<a id="upload" class="btn btn-primary">上传</a>
 						<a id="downloadFile" class="btn btn-primary">下载</a>
 						<a id="deleteFiles" class="btn btn-danger">删除</a>
 						<a href="${ctx }/staticFile/list" class="btn btn-link">返回根目录</a>
@@ -79,6 +79,34 @@
 				</div>
 			</div>
   		</div>
+  		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">
+		        	<span aria-hidden="true">×</span>
+		        	<span class="sr-only">Close</span>
+		        </button>
+		        <h4 class="modal-title" id="myModalLabel">文件上传</h4>
+		      </div>
+		      <div class="modal-body">
+		        <form id="editForm" class="form-horizontal" action="${ctx}/staticFile/upload" method="post" enctype="multipart/form-data">
+		        	<div class="form-group">
+					    <label for="uploadFile">本地上传</label>
+					    <input type="file" id="uploadFile" name="uploadFile">
+					    <input id="currentPath" type="hidden" name="currentPath" value="${filePath}"/>
+					    <p class="help-block">文件大小请不要超过10M</p>
+					</div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		        <button id="saveFiles" type="button" class="btn btn-primary">确定</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 		<script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 		<script src="${ctx}/static/js/bootstrap.min.js"></script>
 		<script src="${ctx}/static/js/page_sync.js"></script>
@@ -132,6 +160,20 @@
 	    				}); 
 	    			}
 	    		}
+	    	});
+	    	
+	    	$('#upload').on('click',function(){
+	    		$('#myModal').modal('show');
+	    	});
+	    	
+	    	$('#saveFiles').on('click',function(){
+	    		var uploadFile = $("#uploadFile").val();
+	    		if(!uploadFile){
+	    			alert("请选择需要上传的文件");
+	    			return;
+	    		}
+	    		$("#editForm").submit();
+	    		$('#myModal').modal('show');
 	    	});
 	    	
 	    });

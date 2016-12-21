@@ -1,6 +1,8 @@
 package com.qlp.cms.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.qlp.cache.GlobalCache;
 import com.qlp.cms.dto.StaticFileDto;
@@ -158,6 +161,29 @@ public static void preView(HttpServletResponse response, String path) {
 		}
 		WebUtil.responseJson(response,info);
 	}
+	
+	public static void upload(MultipartFile uploadFile, String currentPath) {
+		AssertUtil.assertNotNull(currentPath, BusiErrorEnum.INPUT_NOT_EXIST, "当前目录路径不能为空");
+		
+		File file = new File(GlobalCache.dataPath, currentPath);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		String fileName = uploadFile.getOriginalFilename();
+		LogUtil.info(logger, "上传文件名：{0}", fileName);
+		file = new File(file,fileName);
+		FileUtil.writeInFile(getFromMultipartFile(uploadFile),file);
+	}
+	
+	private static InputStream getFromMultipartFile(MultipartFile uploadFile){
+		InputStream is = null;
+		try {
+			is = uploadFile.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return is;
+	}
 
 	/**
 	 * 在临时目录下生成zip文件
@@ -175,5 +201,7 @@ public static void preView(HttpServletResponse response, String path) {
 		file = new File(file,FileNameUtil.buildZipName());
 		return file;
 	}
+
+	
 
 }

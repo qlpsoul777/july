@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.qlp.cache.GlobalCache;
 import com.qlp.cms.dto.StaticFileDto;
@@ -76,6 +78,21 @@ public class StaticFileController {
 		AssertUtil.assertNotBlank(paths, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
 		StaticFileUtil.batchDel(response,paths);
+	}
+	
+	/**
+	 * 文件上传
+	 * @param uploadFile
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/upload")
+	public String uploadFile(@RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpServletResponse response){
+		String currentPath = request.getParameter("currentPath");
+		StaticFileUtil.upload(uploadFile,currentPath);
+		request.setAttribute("filePath", currentPath);
+		return "redirect:list";
 	}
 
 	
