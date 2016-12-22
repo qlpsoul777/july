@@ -16,6 +16,7 @@ import com.qlp.cms.dto.StaticFileDto;
 import com.qlp.cms.util.StaticFileUtil;
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.utils.AssertUtil;
+import com.qlp.core.web.WebUtil;
 
 /**
  * 文件管理controller
@@ -48,10 +49,11 @@ public class StaticFileController {
 	 * @param path
 	 */
 	@RequestMapping("/preView")
-	public void preView(HttpServletResponse response,String path){
+	public void preView(HttpServletRequest request,HttpServletResponse response){
+		String path = WebUtil.decodeParam(request, "path");
 		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
-		StaticFileUtil.preView(response,path);
+		StaticFileUtil.preView(request,response,path);
 	}
 	
 	/**
@@ -59,9 +61,11 @@ public class StaticFileController {
 	 * @param request
 	 * @param response
 	 * @param path
+	 * @throws Exception 
 	 */
 	@RequestMapping("/download")
-	public void download(HttpServletRequest request,HttpServletResponse response,String path){
+	public void download(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		String path = WebUtil.decodeParam(request, "path");
 		AssertUtil.assertNotBlank(path, BusiErrorEnum.INPUT_NOT_EXIST, "文件路径不能为空");
 		
 		File file = new File(GlobalCache.dataPath, path);

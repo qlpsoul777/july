@@ -6,6 +6,10 @@ public enum ResponseTypeEnum {
 	
 	TXT(".txt","text/plain;charset=utf-8"),
 	
+	JS(".js","text/plain;charset=utf-8"),
+	
+	CSS(".css","text/plain;charset=utf-8"),
+	
 	JPG(".jpg","image/jpeg"),
 	
 	PNG(".png","image/png"),

@@ -107,7 +107,7 @@ public class StaticFileUtil {
 		return pageInfo;
 	}
 	
-	public static void preView(HttpServletResponse response, String path) {
+	public static void preView(HttpServletRequest request,HttpServletResponse response, String path) {
 		
 		File file = new File(GlobalCache.dataPath, path);
 		
@@ -115,11 +115,22 @@ public class StaticFileUtil {
 		AssertUtil.assertTrue(file.exists() && file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不存在/文件不能是文件夹");
 		
 		String fileName = FileNameUtil.getAfterName(file.getName());
-		String contentType = ResponseTypeEnum.from(fileName).getContentType();
-		LogUtil.info(logger, "预览文件名：{0}时ContentType为：{1}", fileName,contentType);
+		ResponseTypeEnum typeEnum = ResponseTypeEnum.from(fileName);
 		
-		response.setContentType(contentType);
+		if(ResponseTypeEnum.DOWNLOAD.equals(typeEnum)){
+			WebUtil.setDownloadResponseHeader(request,response,file);
+		}else{
+			String contentType = typeEnum.getContentType();
+			LogUtil.info(logger, "预览文件名：{0}时ContentType为：{1}", fileName,contentType);
+			response.setContentType(contentType);
+		}
+		
 		FileUtil.writeOutFile(WebUtil.getFromResponse(response), file);
+		
+		
+		
+		
+		
 		
 	}
 	
@@ -165,14 +176,17 @@ public class StaticFileUtil {
 	public static void upload(MultipartFile uploadFile, String currentPath) {
 		AssertUtil.assertNotNull(currentPath, BusiErrorEnum.INPUT_NOT_EXIST, "当前目录路径不能为空");
 		
-		File file = new File(GlobalCache.dataPath, currentPath);
-		if(!file.exists()){
-			file.mkdirs();
+		File parent = new File(GlobalCache.dataPath, currentPath);
+		if(!parent.exists()){
+			parent.mkdirs();
 		}
 		String fileName = uploadFile.getOriginalFilename();
 		LogUtil.info(logger, "上传文件名：{0}", fileName);
-		file = new File(file,fileName);
+		File file = new File(parent,fileName);
 		FileUtil.writeInFile(getFromMultipartFile(uploadFile),file);
+		if(StringUtil.endsWithIgnoreCase(fileName, FileNameUtil.ZIP_SUFFIX)){
+			FileUtil.deCompress(file, parent, true);
+		}
 	}
 	
 	private static InputStream getFromMultipartFile(MultipartFile uploadFile){

@@ -161,6 +161,17 @@ public class FileUtil {
 	}
 	
 	/**
+	 * 解压zip文件
+	 * @param file
+	 * @param parent
+	 * @param b
+	 */
+	public static void deCompress(File file, File parent, boolean b) {
+		
+		
+	}
+	
+	/**
      * 解压缩zip包
      * @param zipFilePath zip文件的全路径
      * @param unzipFilePath 解压后的文件保存的路径
@@ -290,6 +301,8 @@ public class FileUtil {
         }
 		return targetFile;
 	}
+
+	
 
 	
 

@@ -39,24 +39,22 @@
 						        	<th><input id="chkAll" type="checkbox"/></th>
 						          	<th>名称</th>
 						          	<th>类型</th>
-						          	<th>路径</th>
 						          	<th>大小</th>
 						          	<th>修改时间</th>
 						          	<th>操作</th>
 				        		</tr>
 				      		</thead>
-				      		<tbody id="tbody">
+				      		<tbody>
 					        	<c:forEach items="${pageInfo.content }" var="file">
 					        		<tr>
 					        			<td><input name="chkName" type="checkbox" id="${file.name}" value="${file.path }" /></td>
 					        			<td>${file.name}</td>
 					        			<td>
 					        				<c:choose>
-					        					<c:when test="${file.isFile}">文件</c:when>
-					        					<c:otherwise><a href="${ctx }/staticFile/list?filePath=${file.path }">文件夹</a></c:otherwise>
+					        					<c:when test="${file.isFile}"><span class="glyphicon glyphicon-file"></span></c:when>
+					        					<c:otherwise><a href="${ctx }/staticFile/list?filePath=${file.path }"><span class="glyphicon glyphicon-folder-open"></span></a></c:otherwise>
 					        				</c:choose>
 					        			</td>
-					        			<td>${file.path }</td>
 					        			<td>
 					        				<c:choose>
 					        					<c:when test="${file.isFile}">${file.size }</c:when>
@@ -66,7 +64,7 @@
 					        			<td>${file.modifyTime }</td>
 					        			<td>
 					        				<c:if test="${file.isFile}">
-					        					<a href="${ctx }/staticFile/preView?path=${file.path}" target="_blank">查看</a>
+					        					<a class="preView" data="${file.path }" target="_blank">查看</a>
 					        				</c:if>
 					        			</td>
 					        		</tr>
@@ -136,7 +134,7 @@
 					return;
 				}
 	    		if(checked.length == 1){
-	    			window.location.href = "${ctx }/staticFile/download?path="+checked;
+	    			window.location.href = "${ctx }/staticFile/download?path=" + encodeURI(encodeURI(checked));
 	    		}
 	    	});
 	    	
@@ -174,6 +172,12 @@
 	    		}
 	    		$("#editForm").submit();
 	    		$('#myModal').modal('show');
+	    	});
+	    	
+	    	$('.preView').on('click',function(){
+	    		var href = "${ctx}/staticFile/preView?path=" + encodeURI(encodeURI($(this).attr('data')));
+	    		$(this).attr('href',href);
+	    		return true;
 	    	});
 	    	
 	    });

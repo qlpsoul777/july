@@ -4,7 +4,7 @@ import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 
 public class FileNameUtil {
 	
-	private static final String ZIP_SUFFIX = ".zip";
+	public static final String ZIP_SUFFIX = ".zip";
 	
 	public static String getBeforeName(String originName){
 		AssertUtil.assertNotBlank(originName, BusiErrorEnum.INPUT_NOT_EXIST, "文件名不能为null");
