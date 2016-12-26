@@ -194,7 +194,7 @@ public class StaticFileUtil {
 		try {
 			is = uploadFile.getInputStream();
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 		return is;
 	}
