@@ -3,7 +3,7 @@
  "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-	<!-- 注册typeHandler, 映射数据库中的特殊字段 -->
+	<!-- 注册typeHandler, 映射数据库中的字段 -->
 	<typeHandlers>
 		
 	</typeHandlers>
