@@ -123,12 +123,12 @@
 				<version>${mybatis.version}</version>
 			</dependency>
 			<dependency>
-				<!-- mybatis end -->
 				<groupId>org.mybatis</groupId>
 				<artifactId>mybatis-spring</artifactId>
 				<version>${mybatis-spring.version}</version>
 			</dependency>
-
+			<!-- mybatis end -->
+			
 			<!-- database start -->
 			<dependency>
 				<groupId>mysql</groupId>
