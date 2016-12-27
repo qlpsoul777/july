@@ -5,7 +5,6 @@ import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +14,7 @@ import com.qlp.cache.GlobalCache;
 import com.qlp.cms.dto.StaticFileDto;
 import com.qlp.cms.util.StaticFileUtil;
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
+import com.qlp.core.page.Page;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.web.WebUtil;
 

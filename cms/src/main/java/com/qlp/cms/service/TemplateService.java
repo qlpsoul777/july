@@ -4,16 +4,13 @@ package com.qlp.cms.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qlp.cms.dao.TemplateDao;
 import com.qlp.cms.entity.Template;
+import com.qlp.core.page.Page;
+import com.qlp.core.page.Pageable;
 import com.qlp.core.utils.LogUtil;
 
 @Service("templateService")
@@ -46,19 +43,12 @@ public class TemplateService {
 	@Transactional(readOnly = false)
 	public Template save(Template template){
 		LogUtil.info(logger, "待持久化参数template:{0}", template);
-		return templateDao.saveAndFlush(template);
+		return templateDao.save(template);
 	}
 	
 	public Page<Template> queryPageBySite(Template template, Pageable pageable) {
-		ExampleMatcher matcher = ExampleMatcher.matching()     
-				  .withIgnorePaths("createTime")
-		.withIgnoreNullValues()
-		.withMatcher("name",GenericPropertyMatchers.contains())
-		.withMatcher("status", GenericPropertyMatchers.exact())
-		.withMatcher("type", GenericPropertyMatchers.exact());
-	
-		Example<Template> example = Example.of(template, matcher);
-		return templateDao.findAll(example, pageable);
+		
+		return templateDao.findAll(template, pageable);
 	}
 
 	public Template newIfNotFound(Long id) {

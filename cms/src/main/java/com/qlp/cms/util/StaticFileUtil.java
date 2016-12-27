@@ -13,10 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.qlp.cache.GlobalCache;
@@ -27,6 +23,10 @@ import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.Exception.ErrorDetail.SysErrorEnum;
 import com.qlp.core.entity.MsgInfo;
 import com.qlp.core.enums.ResponseTypeEnum;
+import com.qlp.core.page.Page;
+import com.qlp.core.page.PageImpl;
+import com.qlp.core.page.PageRequest;
+import com.qlp.core.page.Pageable;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.DataConvertUtil;
 import com.qlp.core.utils.DateUtil;
@@ -101,7 +101,7 @@ public class StaticFileUtil {
 				}
 				Pageable pageable = new PageRequest(pageNum,pageSize);
 				pageInfo = new PageImpl<>(content, pageable, total);
-				LogUtil.info(logger, "分页信息，当前第{0}页，每页显示{1}条，总共{2}页", pageNum,pageSize,pageInfo.getTotalPages());
+				LogUtil.info(logger, "分页信息，当前第{0}页，每页显示{1}条，总共{2}页", pageNum,pageSize,pageInfo.getTotalPage());
 			}
 		}
 		return pageInfo;
