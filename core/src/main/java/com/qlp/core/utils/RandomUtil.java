@@ -7,7 +7,7 @@ import java.util.UUID;
  * 随机数生成工具类
  */
 public class RandomUtil {
-	private static final int DEFAULT_LEN = 6;
+	private static final int DEFAULT_LEN = 6;	//默认随机数长度
 	private static final int MAX_LEN = 9;
 
     /**
@@ -24,15 +24,11 @@ public class RandomUtil {
         return result;
     }
     
-    public static String getFixLenRandomNumber(int len){
+    private static String getFixLenRandomNumber(int len){
     	if(len > MAX_LEN){
     		len = MAX_LEN;
     	}
     	return String.valueOf((int)(Math.random()* Math.pow(10, len)));
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getUUID());
     }
 
 }

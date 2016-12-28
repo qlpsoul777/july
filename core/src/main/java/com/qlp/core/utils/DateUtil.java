@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 日期时间工具类
  * @author qlp
@@ -12,7 +15,9 @@ import java.util.Date;
  */
 public class DateUtil {
 	
-	public enum FormatDate{
+	private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
+	
+	public static enum FormatDate{
 		YMD_1("yyyy-MM-dd"),
 		YMDHMSS("yyyyMMddHHmmssSSS");
 		
@@ -28,17 +33,20 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 日期时间转字符串
-	 * @param date
-	 * @param format
+	 * 根据指定格式将日期时间转成字符串
+	 * @param date 不能为null,否则抛出MyException
+	 * @param format 不能为null,否则抛出MyException
 	 * @return
 	 */
 	public static String date2String(Date date,FormatDate format){
+		AssertUtil.assertNotNull(date, "Date参数不能为null");
+		AssertUtil.assertNotNull(format, "FormatDate参数不能为null");
+		
 		return format.getFormat().format(date);
 	}
 	
 	/**
-	 * 字符串转日期时间
+	 * 根据指定格式将字符串转日期时间,如果转换出错返回null
 	 * @param dateStr
 	 * @param format
 	 * @return
@@ -47,7 +55,7 @@ public class DateUtil {
 		try {
 			return format.getFormat().parse(dateStr);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			LogUtil.error(logger, "字符串{0}转日期时间出错：{1}", dateStr,e);
 		}
 		return null;
 	}

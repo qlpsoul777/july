@@ -38,8 +38,8 @@ public class PageImpl<T> implements Page<T> {
 	}
 
 	@Override
-	public int getcurrentPage() {
-		return pageable.getcurrentPage();
+	public int getCurrentPage() {
+		return pageable.getCurrentPage();
 	}
 
 	@Override

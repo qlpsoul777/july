@@ -9,13 +9,11 @@ import java.lang.reflect.Modifier;
  */
 public class ReflectionUtil {
 
-    public static Field findField(Class<?> clazz, String name)
-    {
+    public static Field findField(Class<?> clazz, String name){
         return findField(clazz, name, null);
     }
 
-    public static Field findField(Class<?> clazz, String name, Class<?> type)
-    {
+    public static Field findField(Class<?> clazz, String name, Class<?> type){
         Class<?> searchType = clazz;
         while ((!Object.class.equals(searchType)) && (searchType != null))
         {

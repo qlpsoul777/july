@@ -1,5 +1,7 @@
 package com.qlp.core.page;
 
+import java.util.Map;
+
 public interface Pageable {
 	
 	/**
@@ -12,7 +14,7 @@ public interface Pageable {
 	 * 当前页(从0开始计)
 	 * @return
 	 */
-	int getcurrentPage();
+	int getCurrentPage();
 	
 	/**
 	 * 偏移量
@@ -25,5 +27,10 @@ public interface Pageable {
 	 * @return
 	 */
 	Sort getSort();
+	
+	/**
+	 * 查询条件
+	 */
+	Map<String,Object> getParams();
 
 }

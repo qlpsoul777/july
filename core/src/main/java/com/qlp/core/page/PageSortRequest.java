@@ -1,8 +1,10 @@
 package com.qlp.core.page;
 
+import java.util.Map;
+
 import com.qlp.core.utils.AssertUtil;
 
-public class PageSortRequest extends PageRequestAbstract {
+public class PageSortRequest extends PageRequest{
 	
 	private final Sort sort;
 	
@@ -16,6 +18,11 @@ public class PageSortRequest extends PageRequestAbstract {
 	@Override
 	public Sort getSort() {
 		return sort;
+	}
+
+	@Override
+	public Map<String, Object> getParams() {
+		return null;
 	}
 
 }

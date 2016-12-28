@@ -36,8 +36,7 @@ public class FileUtil {
 	 * @param file
 	 */
 	public static void writeInFile(InputStream ins, File file) {
-		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
-		//AssertUtil.assertTrue(file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不能是文件夹");
+		AssertUtil.assertNotNull(file,"文件不能为null");
 		
 		OutputStream os = null;
 		int count;
@@ -72,8 +71,8 @@ public class FileUtil {
 	 */
 	public static void writeOutFile(OutputStream os, File file,boolean isDelete) {
 		
-		AssertUtil.assertNotNull(file, BusiErrorEnum.INPUT_NOT_EXIST, "文件不能为null");
-		AssertUtil.assertTrue(file.exists() && file.isFile(),BusiErrorEnum.INPUT_STATE_ILLEGAL, "文件不存在/文件不能是文件夹");
+		AssertUtil.assertNotNull(file,"文件不能为null");
+		AssertUtil.assertTrue(file.exists() && file.isFile(),"文件不存在/文件不能是文件夹");
 		
 		InputStream fis = null;
 		int count;
@@ -101,6 +100,8 @@ public class FileUtil {
 	 * @param file 文件路径
 	 */
 	public static void deleteAllFiles(File file) {
+		AssertUtil.assertNotNull(file,"文件不能为null");
+		
 		if (!file.exists()){
 			return;
 		}
@@ -155,7 +156,7 @@ public class FileUtil {
 			os = new ZipOutputStream(new CheckedOutputStream(new FileOutputStream(targetFile), new CRC32()));
 			zip(os,sourceFile,dirFlag);
 		} catch (FileNotFoundException e) {
-			
+			LogUtil.error(logger, "压缩文件出错：{0}", e);
 		}finally{
 			IoUtil.close(os);
 		}
@@ -199,23 +200,19 @@ public class FileUtil {
 	                bos.write(buffer, 0, count);
 	            }
 	            bos.flush();
-	            IoUtil.close(bis,bos);
 			}
 			
 		} catch (Exception e) {
-			
+			LogUtil.error(logger, "解压文件出错：{0}", e);
 		}finally{
 			
-			IoUtil.close(zip);
+			IoUtil.close(zip,bis,bos);
 			
 			if(isDelete){
 				deleteAllFiles(file);
 			}
 		}
 	}
-	
-	
-
 
 	private static void zip(ZipOutputStream os, File sourceFile, boolean dirFlag) {
 		if(sourceFile.isDirectory()){
@@ -251,7 +248,7 @@ public class FileUtil {
 				}
 				zos.flush();
 			} catch (Exception e) {
-				
+				LogUtil.error(logger, "压缩文件出错：{0}", e);
 			}finally{
 				IoUtil.close(fis);
 			}
@@ -271,36 +268,4 @@ public class FileUtil {
         }
 		return targetFile;
 	}
-
-	
-
-	
-
-	
-
-
-
-
-	
-	/*BufferedReader bufReader = null;
-	StringBuilder sb = new StringBuilder();
-	String temp;
-	try {
-		bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(file),"utf-8"));
-		while((temp = bufReader.readLine()) != null){
-			sb.append(temp);
-		}
-		response.getWriter().write(sb.toString());
-	} catch (Exception e) {
-		LogUtil.error(logger, "文件不存在：{0}", e);
-	} finally{
-		if(bufReader != null){
-			try {
-				bufReader.close();
-			} catch (IOException e) {
-				LogUtil.error(logger, "关闭BufferedReader出错：{0}", e);
-			}
-		}
-	}*/
-	
 }

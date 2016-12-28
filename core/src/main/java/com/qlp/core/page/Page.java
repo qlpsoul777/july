@@ -2,6 +2,13 @@ package com.qlp.core.page;
 
 import java.util.List;
 
+/**
+ * 分页对象接口
+ * 	类层次： interface Page<T>
+ * 			---> PageImpl<T>实现Page接口，聚合Pageable接口
+ * @author qlp
+ * @param <T>
+ */
 public interface Page<T> {
 	
 	/**
@@ -26,7 +33,7 @@ public interface Page<T> {
 	 * 当前页(从0开始计)
 	 * @return
 	 */
-	int getcurrentPage();
+	int getCurrentPage();
 	
 	/**
 	 * 总页数
