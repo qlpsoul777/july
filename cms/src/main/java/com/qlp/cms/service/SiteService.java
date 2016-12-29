@@ -3,16 +3,13 @@ package com.qlp.cms.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qlp.cms.dao.SiteDao;
 import com.qlp.cms.entity.Site;
+import com.qlp.core.page.Page;
+import com.qlp.core.page.Pageable;
 import com.qlp.core.utils.LogUtil;
 import com.qlp.core.utils.StringUtil;
 
@@ -50,7 +47,7 @@ public class SiteService {
 	@Transactional(readOnly = false)
 	public Site save(Site site){
 		LogUtil.info(logger, "待持久化参数site:{0}", site);
-		return siteDao.saveAndFlush(site);
+		return siteDao.save(site);
 	}
 	
 	/**
@@ -74,15 +71,7 @@ public class SiteService {
 	 * @return 分页结果
 	 */
 	public Page<Site> queryPageBySite(Site site,Pageable pageable){
-		ExampleMatcher matcher = ExampleMatcher.matching()     
-				  .withIgnorePaths("createTime")
-		.withIgnoreNullValues()
-		.withMatcher("name",GenericPropertyMatchers.contains())
-		.withMatcher("status", GenericPropertyMatchers.exact())
-		.withMatcher("num", GenericPropertyMatchers.exact());
-	
-		Example<Site> example = Example.of(site, matcher);
-		return siteDao.findAll(example, pageable);
+		return siteDao.findAll(site, pageable);
 	}
 
 	public Site newIfNotFound(Long id) {

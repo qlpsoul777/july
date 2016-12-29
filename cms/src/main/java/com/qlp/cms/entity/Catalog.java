@@ -2,34 +2,15 @@ package com.qlp.cms.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import com.qlp.core.converter.StatusEnumConverter;
 import com.qlp.core.entity.IdEntity;
 import com.qlp.core.enums.ContentTypeEnum;
 import com.qlp.core.enums.StatusEnum;
 
 /**
- * 栏目实体
+ * 栏目实体(T_CMS_CATALOG)
  * @author july
  *
  */
-@Entity
-@Table(name = "T_CMS_CATALOG")
 public class Catalog extends IdEntity{
 	
 	private String name;				//栏目名
@@ -54,7 +35,6 @@ public class Catalog extends IdEntity{
 	
 	private List<Catalog> children;		//子栏目
 
-	@Column(name = "catalog_name")
 	public String getName() {
 		return name;
 	}
@@ -63,7 +43,6 @@ public class Catalog extends IdEntity{
 		this.name = name;
 	}
 
-	@Column(name = "catalog_alias")
 	public String getAlias() {
 		return alias;
 	}
@@ -72,8 +51,6 @@ public class Catalog extends IdEntity{
 		this.alias = alias;
 	}
 
-	@Column(name = "catalog_status")
-	@Convert( converter = StatusEnumConverter.class )
 	public StatusEnum getStatus() {
 		return status;
 	}
@@ -82,7 +59,6 @@ public class Catalog extends IdEntity{
 		this.status = status;
 	}
 
-	@Column(name = "introduction")
 	public String getIntroduction() {
 		return introduction;
 	}
@@ -91,7 +67,6 @@ public class Catalog extends IdEntity{
 		this.introduction = introduction;
 	}
 
-	@Column(name = "catalog_path")
 	public String getPath() {
 		return path;
 	}
@@ -100,8 +75,6 @@ public class Catalog extends IdEntity{
 		this.path = path;
 	}
 
-	@Column(name = "catalog_type")
-	@Enumerated(value = EnumType.STRING)
 	public ContentTypeEnum getType() {
 		return type;
 	}
@@ -110,7 +83,6 @@ public class Catalog extends IdEntity{
 		this.type = type;
 	}
 	
-	@Column(name = "catalog_sort")
 	public Integer getSort() {
 		return sort;
 	}
@@ -119,7 +91,6 @@ public class Catalog extends IdEntity{
 		this.sort = sort;
 	}
 
-	@Column(name = "img_path")
 	public String getImgPath() {
 		return imgPath;
 	}
@@ -128,8 +99,6 @@ public class Catalog extends IdEntity{
 		this.imgPath = imgPath;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "site_id")
 	public Site getSite() {
 		return site;
 	}
@@ -138,8 +107,6 @@ public class Catalog extends IdEntity{
 		this.site = site;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "pid")
 	public Catalog getParent() {
 		return parent;
 	}
@@ -148,9 +115,6 @@ public class Catalog extends IdEntity{
 		this.parent = parent;
 	}
 
-	@OneToMany(targetEntity = Catalog.class, cascade = { CascadeType.ALL }, mappedBy = "parent")
-	@Fetch(value = FetchMode.SUBSELECT)
-	@OrderBy("sort desc")
 	public List<Catalog> getChildren() {
 		return children;
 	}

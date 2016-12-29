@@ -1,28 +1,14 @@
 package com.qlp.cms.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.qlp.core.converter.StatusEnumConverter;
 import com.qlp.core.entity.IdEntity;
 import com.qlp.core.enums.StatusEnum;
 import com.qlp.enums.TemplateTypeEnum;
 
 /**
- * 模板实体
+ * 模板实体(T_CMS_TEMPLATE)
  * @author qlp
  *
  */
-@Entity
-@Table(name = "T_CMS_TEMPLATE")
 public class Template extends IdEntity{
 	
 	private String name;				//模板名称
@@ -43,7 +29,6 @@ public class Template extends IdEntity{
 	
 	private Site site;					//所属站点
 	
-	@Column(name = "template_name")
 	public String getName() {
 		return name;
 	}
@@ -52,8 +37,6 @@ public class Template extends IdEntity{
 		this.name = name;
 	}
 
-	@Column(name = "template_type")
-	@Enumerated(value = EnumType.ORDINAL)
 	public TemplateTypeEnum getType() {
 		return type;
 	}
@@ -62,7 +45,6 @@ public class Template extends IdEntity{
 		this.type = type;
 	}
 
-	@Column(name = "template_path")
 	public String getPath() {
 		return path;
 	}
@@ -71,7 +53,6 @@ public class Template extends IdEntity{
 		this.path = path;
 	}
 
-	@Column(name = "template_sort")
 	public Integer getSort() {
 		return sort;
 	}
@@ -80,8 +61,6 @@ public class Template extends IdEntity{
 		this.sort = sort;
 	}
 
-	@Column(name = "template_status")
-	@Convert( converter = StatusEnumConverter.class )
 	public StatusEnum getStatus() {
 		return status;
 	}
@@ -90,8 +69,6 @@ public class Template extends IdEntity{
 		this.status = status;
 	}
 	
-	@Lob
-	@Column(name = "template_content")
 	public String getContent() {
 		return content;
 	}
@@ -100,7 +77,6 @@ public class Template extends IdEntity{
 		this.content = content;
 	}
 	
-	@Column(name = "introduction")
 	public String getIntroduction() {
 		return introduction;
 	}
@@ -109,8 +85,6 @@ public class Template extends IdEntity{
 		this.introduction = introduction;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "catalog_id")
 	public Catalog getCatalog() {
 		return catalog;
 	}
@@ -119,8 +93,6 @@ public class Template extends IdEntity{
 		this.catalog = catalog;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "site_id")
 	public Site getSite() {
 		return site;
 	}

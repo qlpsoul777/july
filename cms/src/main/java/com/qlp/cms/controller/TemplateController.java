@@ -3,10 +3,6 @@ package com.qlp.cms.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +17,10 @@ import com.qlp.constant.CmsConstant;
 import com.qlp.core.Exception.ErrorDetail.BusiErrorEnum;
 import com.qlp.core.Exception.ErrorDetail.SysErrorEnum;
 import com.qlp.core.enums.StatusEnum;
+import com.qlp.core.page.Page;
+import com.qlp.core.page.PageSortRequest;
+import com.qlp.core.page.Pageable;
+import com.qlp.core.page.Sort;
 import com.qlp.core.utils.AssertUtil;
 import com.qlp.core.utils.DataConvertUtil;
 import com.qlp.enums.TemplateTypeEnum;
@@ -72,7 +72,7 @@ public class TemplateController {
 		
 		int pageNum = DataConvertUtil.toInt(request.getParameter("currentPage"), 0);
 		int pageSize = DataConvertUtil.toInt(request.getParameter("pageSize"), 10);
-		Pageable pageable = new PageRequest(pageNum, pageSize, new Sort(Sort.Direction.DESC,"status","createTime"));
+		Pageable pageable = new PageSortRequest(pageNum, pageSize, new Sort(Sort.Direction.DESC,"status","createTime"));
 		
 		Page<Template> pageInfo = templateService.queryPageBySite(template,pageable);
 		request.setAttribute("pageInfo", pageInfo);

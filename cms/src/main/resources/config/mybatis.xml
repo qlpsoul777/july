@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 注册typeHandler,映射数据库中的字段 -->
+	<typeHandlers>
+		
+	</typeHandlers>
+	
+	
+	<plugins>
+		<plugin interceptor="com.qlp.core.page.PageInterceptor">
+			<property name="dataBaseType" value="mysql"/>
+		</plugin>
+	</plugins>
+
+</configuration>

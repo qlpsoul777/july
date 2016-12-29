@@ -13,6 +13,8 @@ import com.qlp.cms.dao.CatalogDao;
 import com.qlp.cms.entity.Catalog;
 import com.qlp.cms.entity.Site;
 import com.qlp.constant.CmsConstant;
+import com.qlp.core.page.Page;
+import com.qlp.core.page.PageImpl;
 import com.qlp.core.utils.ConstantsUtil;
 import com.qlp.core.utils.LogUtil;
 
@@ -52,8 +54,9 @@ public class CatalogService {
 	 */
 	@Transactional(readOnly = false)
 	public Catalog save(Catalog catalog){
+		
 		LogUtil.info(logger, "待持久化参数catalog:{0}", catalog);
-		return catalogDao.saveAndFlush(catalog);
+		return catalogDao.save(catalog);
 	}
 	
 	/**
@@ -66,7 +69,6 @@ public class CatalogService {
 		LogUtil.info(logger, "待删除catalog主键:{0}", id);
 		
 		catalogDao.delete(id);
-		catalogDao.flush();
 		
 		LogUtil.info(logger, "删除catalog成功");
 		return ConstantsUtil.SUCCESS;

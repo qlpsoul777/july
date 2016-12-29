@@ -200,6 +200,12 @@
 				<version>${fastjson.version}</version>
 			</dependency>
 			<!-- json end -->
+			
+			<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.8.6</version>
+		</dependency>
 
 
 

@@ -9,91 +9,18 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
        default-lazy-init="true">
 
-    <description>Spring公共配置</description>
-    
-    <!-- 引入属性配置文件 -->
-	<context:property-placeholder ignore-unresolvable="true"
-		location="classpath*:/application.development.properties"/>
+    <description> Spring公共配置</description>
     
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
     <context:component-scan base-package="com.qlp.cms.*">
         <context:exclude-filter type="annotation" 
         	expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-    
-    <!-- Jpa 事务管理器 -->
-    <bean id="transactionManager"
-   		class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-    </bean>
-    
-    <!-- 开启注解事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-    
-    <!-- Jpa Entity Manager 配置 -->
-    <bean id="entityManagerFactory" 
-    	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-       	 <!-- 实体管理器,自动扫描，代替以前的persistence.xml -->
-        <property name="packagesToScan" value="com.qlp.cms" />
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="databasePlatform" value="${jdbc.sql.dialect}" />
-            </bean>
-        </property>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.ejb.naming_strategy">
-                	org.hibernate.cfg.ImprovedNamingStrategy
-                </prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-            </props>
-        </property>
-    </bean>
-    
-    <!-- Spring Data Jpa配置 -->
-    <jpa:repositories base-package="com.qlp.core.orm,com.qlp.cms.dao"
-    	base-class="com.qlp.core.orm.MyRepositoryImpl"
-    	transaction-manager-ref="transactionManager"
-    	entity-manager-factory-ref="entityManagerFactory"
-    	factory-class="com.qlp.core.orm.MyRepositoryFactoryBean" />
-    
-    
-    <!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" 
-    	init-method="init" destroy-method="close">   
-	    <!-- 基本连接配置 -->  
-	    <property name="url" value="${jdbc.url}" />  
-	    <property name="username" value="${jdbc.username}" />  
-	    <property name="password" value="${jdbc.password}" />  
-	    
-	    <!-- 配置初始化大小、最小、最大 -->  
-	    <property name="initialSize" value="${dbcp.initialSize}" />  
-	    <property name="minIdle" value="${dbcp.minIdle}" />   
-	    <property name="maxActive" value="${dbcp.maxActive}" />  
-	    
-	    <!-- 配置获取连接等待超时的时间 -->  
-    	<property name="maxWait" value="${dbcp.maxWait}" />  
-    	
-	    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->  
-	    
-    	<property name="timeBetweenEvictionRunsMillis" value="${dbcp.timeBetweenEvictionRunsMillis}" />  
-	   
-	    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->  
-    	<property name="minEvictableIdleTimeMillis" value="${dbcp.minEvictableIdleTimeMillis}" /> 
-	    <property name="validationQuery" value="SELECT 'x' from dual" />  
-	    <property name="testWhileIdle" value="true" />  
-	    <property name="testOnBorrow" value="false" />  
-	    <property name="testOnReturn" value="false" />  
-	   
-	    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->  
-	    <property name="poolPreparedStatements" value="${dbcp.poolPreparedStatements}" />  
-	    <property name="maxPoolPreparedStatementPerConnectionSize" value="${dbcp.maxPoolPreparedStatementPerConnectionSize}" />  
-	    
-	    <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->  
-    	<property name="filters" value="stat" />   
-	</bean>
-   
+	
+	<!-- 引入Spring其它配置文件 -->
+	<import resource="spring/Spring-*.xml" />
+   	
+   	<beans profile="development">
+		<context:property-placeholder location="classpath*:config/application.development.properties" />
+	</beans>
 </beans>
