@@ -1,12 +1,15 @@
 package com.qlp.core.page;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.qlp.core.utils.AssertUtil;
 
 
-public class PageRequest implements Pageable{
+public class PageRequest implements Pageable,Serializable{
 
+	private static final long serialVersionUID = -7811548451180065787L;
+	
 	private final int pageSize;
 	private final int currentPage;
 	

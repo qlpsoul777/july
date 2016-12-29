@@ -18,8 +18,10 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @MappedSuperclass
 @Access(AccessType.PROPERTY)
-public class UIdEntity {
+public class UIdEntity extends BaseEntity{
 	
+	private static final long serialVersionUID = 6599096373074323216L;
+
 	private String id;		//主键
 	
 	private Date createTime;	//创建时间
