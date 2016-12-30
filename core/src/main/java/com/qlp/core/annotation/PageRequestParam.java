@@ -15,4 +15,6 @@ public @interface PageRequestParam {
 	
 	String  name() default "pageable";
 	
+	int size() default 10;
+	
 }

@@ -7,7 +7,9 @@ import com.qlp.core.Exception.ErrorDetail;
  * @author qlp
  * @param <T>
  */
-public class Result<T> {
+public class Result<T> extends BaseEntity{
+	
+	private static final long serialVersionUID = -4749584860749892798L;
 	
 	private boolean isSuccess;	//成功标识
 	private T result;			//返回结果

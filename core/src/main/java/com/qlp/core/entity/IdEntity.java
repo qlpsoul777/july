@@ -21,6 +21,8 @@ import javax.persistence.TemporalType;
 @Access(AccessType.PROPERTY)
 public class IdEntity extends BaseEntity{
 	
+	private static final long serialVersionUID = 2711881167473624813L;
+
 	private Long id;		//主键
 	
 	private Date createTime;	//创建时间

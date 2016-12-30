@@ -5,7 +5,9 @@ package com.qlp.core.entity;
  * @author qlp
  *
  */
-public class MsgInfo {
+public class MsgInfo extends BaseEntity{
+	
+	private static final long serialVersionUID = -1972413320769235514L;
 	
 	private boolean isSuccess;	//成功标识
 	private String msg;			//提示信息
@@ -36,7 +38,5 @@ public class MsgInfo {
 		this.isSuccess = isSuccess;
 		this.msg = msg;
 	}
-	
-	
 
 }
